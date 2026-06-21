@@ -1,0 +1,14 @@
+node_modules
+.env
+.env.*
+artifacts
+cache
+.vercel
+typechain-types
+fhevmTemp
+
+# keep example env templates (no secrets)
+!.env.example
+
+# internal planning doc — not for the public repo
+ZAMA_PORT.md

@@ -1,0 +1,27 @@
+{
+  "name": "obscura",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy-all.ts --network sepolia",
+    "deploy:local": "hardhat run scripts/deploy-all.ts",
+    "prices": "hardhat run scripts/update-prices.ts --network sepolia",
+    "verify": "hardhat verify --network sepolia",
+    "lint": "echo 'no lint'"
+  },
+  "devDependencies": {
+    "@fhevm/hardhat-plugin": "^0.4.2",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@fhevm/solidity": "^0.11.1",
+    "@openzeppelin/confidential-contracts": "^0.4.1",
+    "@openzeppelin/contracts": "^5.0.2"
+  }
+}
