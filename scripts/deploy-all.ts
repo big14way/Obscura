@@ -10,7 +10,7 @@ dotenv.config();
  * Sepolia:              npm run deploy           (needs DEPLOYER_PK + SEPOLIA_RPC in .env)
  *
  * On Sepolia you can point collateral/borrowable at the OFFICIAL cTokenMocks instead of the
- * ConfidentialMockToken (see ZAMA_PORT.md §5.8): set USE_OFFICIAL_CTOKENS=true and the
+ * ConfidentialMockToken: set USE_OFFICIAL_CTOKENS=true and the
  * cUSDT/cWETH addresses below. The ConfidentialMockToken path is for local Hardhat runs.
  */
 async function main() {

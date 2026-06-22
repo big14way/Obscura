@@ -4,7 +4,7 @@
 
 > 🔐 **Composable privacy for onchain credit**: an AI agent's debt, collateral, credit limit, reputation and x402 payment amounts are **encrypted on-chain** (`euint64`) via Fully Homomorphic Encryption. Only the agent can decrypt their own values (EIP-712 user decryption).
 
-> 📄 **Zama port:** this repo was re‑architected from a plaintext build into a **confidential** agentic‑credit dApp for the **Zama Developer Program — Mainnet Season 3 (Builder Track)**. See **[ZAMA_PORT.md](ZAMA_PORT.md)** for the full re‑architecture plan.
+> 📄 **Zama port:** this repo was re‑architected from a plaintext build into a **confidential** agentic‑credit dApp for the **Zama Developer Program — Mainnet Season 3 (Builder Track)**.
 
 🌐 **Run locally:** `cd app && npm run dev` → http://localhost:3000 _(not yet deployed to a public URL)_
 
