@@ -59,23 +59,25 @@ The payment amount is encrypted; only the payer (and authorized parties) can dec
 
 ---
 
-## Deployed Contracts
-
-Addresses are written by the deploy script (`npm run deploy`) to your environment / `app/src/lib/evmContracts` after deploying to **Ethereum Sepolia**. The frontend reads them from `CONTRACTS` and `SEPOLIA_CONFIG`.
-
-| Contract | Role |
-|----------|------|
-| ObscuraCore | Protocol config |
-| ObscuraLending | Confidential deposit / borrow / repay / withdraw (`euint64`) |
-| ObscuraLP | Confidential yield vault |
-| ObscuraGAD | Gradual Auto-Deleveraging |
-| ReputationRegistry | Encrypted credit score (`euint64`) |
-| X402Receipt | Encrypted HTTP 402 payment receipts |
-| cUSDT / cWETH / cUSDC | Confidential ERC-7984 tokens (`ConfidentialMockToken`) |
+## Deployed Contracts (live on Ethereum Sepolia — verified)
 
 **Network:** Ethereum Sepolia · **Chain ID:** `11155111` · **Explorer:** https://sepolia.etherscan.io
+All contracts are verified on Etherscan. The frontend is wired to these by default (`app/src/lib/evmContracts.ts`), overridable via `NEXT_PUBLIC_*`.
 
-See `docs/DEPLOYMENTS.md` for the full table.
+| Contract | Role | Address (verified) |
+|----------|------|--------------------|
+| ObscuraLending | Confidential deposit / borrow / repay / withdraw (`euint64`) | [`0x4138…5f41`](https://sepolia.etherscan.io/address/0x413890977637cF1490E12f62aFfD1236D68e5f41#code) |
+| ObscuraCore | Protocol config (cleartext price/risk boundary) | [`0x85c8…FfC46`](https://sepolia.etherscan.io/address/0x85c8Ba069e43A63C8272cBDd83C08Afc391FfC46#code) |
+| ObscuraGAD | Gradual Auto-Deleveraging (permissionless, leak-free) | [`0x6436…d3032`](https://sepolia.etherscan.io/address/0x64368aa0Cc2385908Cd9666a866Bdb10D94d3032#code) |
+| ObscuraLP | Confidential yield vault | [`0x0A4A…374438`](https://sepolia.etherscan.io/address/0x0A4AE2dDcC75887100719C65E3AA2a9296374438#code) |
+| ReputationRegistry | Encrypted credit score (`euint64`) | [`0x2794…7dEF69`](https://sepolia.etherscan.io/address/0x27947554B362034641330B97D2b8e30A617dEF69#code) |
+| X402Receipt | Encrypted HTTP 402 payment receipts | [`0xFd06…841330`](https://sepolia.etherscan.io/address/0xFd063287E37a833d631bFD47afcFDcB0E4841330#code) |
+| ObscuraFlash | Flash loans (composable plaintext-amount leg) | [`0x2700…484451`](https://sepolia.etherscan.io/address/0x2700E6f99dBe91283aC17bB0D03a5E34Da484451#code) |
+| cUSDT | Confidential ERC-7984 token (`ConfidentialMockToken`, 6d) | [`0x603B…00B1`](https://sepolia.etherscan.io/address/0x603B390a66Bae8EFa530D41ae563D5D4569a00B1#code) |
+| cWETH | Confidential ERC-7984 token (6d) | [`0x8C65…0557`](https://sepolia.etherscan.io/address/0x8C658bEc9BC761910144A72377FcBEd9404a0557#code) |
+| cWBTC | Confidential ERC-7984 token (8d) | [`0x6951…eC7a`](https://sepolia.etherscan.io/address/0x69511f0F5a629710D113B221dCE44B8650CFeC7a#code) |
+
+To redeploy your own set: `npm run deploy` → paste the printed `NEXT_PUBLIC_*` into `app/.env.local` → `npm run verify` equivalent (`npx hardhat run scripts/verify.ts --network sepolia`).
 
 ---
 

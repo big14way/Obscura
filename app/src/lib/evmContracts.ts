@@ -1,21 +1,21 @@
-// Obscura — confidential agentic credit on the Zama Protocol (FHEVM), deployed on Sepolia.
-// Protocol addresses come from the deploy script (scripts/deploy-all.ts) via NEXT_PUBLIC_* env.
-// Token defaults point at the OFFICIAL Sepolia cTokenMocks + Wrappers Registry (ZAMA_PORT.md §5.8).
+// Obscura — confidential agentic credit on the Zama Protocol (FHEVM), deployed on Ethereum Sepolia.
+// Defaults below are the LIVE, Etherscan-verified deployment (deployed 2026-06; see README).
+// Override any of them with NEXT_PUBLIC_* env vars (e.g. app/.env.local after a fresh deploy).
 
 export const CONTRACTS = {
-  // Confidential Obscura protocol (fill from deploy output -> app/.env.local)
-  core: process.env.NEXT_PUBLIC_CORE || "",
-  lending: process.env.NEXT_PUBLIC_LENDING || "",
-  lp: process.env.NEXT_PUBLIC_LP || "",
-  gad: process.env.NEXT_PUBLIC_GAD || "",
-  reputation: process.env.NEXT_PUBLIC_REPUTATION || "",
-  x402: process.env.NEXT_PUBLIC_X402 || "",
-  flash: process.env.NEXT_PUBLIC_FLASH || "",
+  // Confidential Obscura protocol (live Sepolia deployment)
+  core: process.env.NEXT_PUBLIC_CORE || "0x85c8Ba069e43A63C8272cBDd83C08Afc391FfC46",
+  lending: process.env.NEXT_PUBLIC_LENDING || "0x413890977637cF1490E12f62aFfD1236D68e5f41",
+  lp: process.env.NEXT_PUBLIC_LP || "0x0A4AE2dDcC75887100719C65E3AA2a9296374438",
+  gad: process.env.NEXT_PUBLIC_GAD || "0x64368aa0Cc2385908Cd9666a866Bdb10D94d3032",
+  reputation: process.env.NEXT_PUBLIC_REPUTATION || "0x27947554B362034641330B97D2b8e30A617dEF69",
+  x402: process.env.NEXT_PUBLIC_X402 || "0xFd063287E37a833d631bFD47afcFDcB0E4841330",
+  flash: process.env.NEXT_PUBLIC_FLASH || "0x2700E6f99dBe91283aC17bB0D03a5E34Da484451",
 
-  // Confidential ERC-7984 tokens (official Sepolia cTokenMocks by default)
-  usdc: process.env.NEXT_PUBLIC_USDC || "0x4E7B06D78965594eB5EF5414c357ca21E1554491", // cUSDT
-  wbtc: process.env.NEXT_PUBLIC_WBTC || "0x7c5BF43B851c1dff1a4feE8dB225b87f2C223639", // cUSDC (stand-in)
-  weth: process.env.NEXT_PUBLIC_WETH || "0x46208622DA27d91db4f0393733C8BA082ed83158", // cWETH
+  // Confidential ERC-7984 tokens (our deployed ConfidentialMockTokens — faucet-mintable)
+  usdc: process.env.NEXT_PUBLIC_USDC || "0x603B390a66Bae8EFa530D41ae563D5D4569a00B1", // cUSDT
+  wbtc: process.env.NEXT_PUBLIC_WBTC || "0x69511f0F5a629710D113B221dCE44B8650CFeC7a", // cWBTC
+  weth: process.env.NEXT_PUBLIC_WETH || "0x8C658bEc9BC761910144A72377FcBEd9404a0557", // cWETH
 };
 
 // Official Zama Wrappers Registry on Sepolia (ERC-20 <-> ERC-7984 pairs).
