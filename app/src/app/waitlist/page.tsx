@@ -185,7 +185,7 @@ export default function WaitlistPage() {
             {/* Share Buttons */}
             <div className="flex justify-center gap-4 mt-6">
               <a
-                href={`https://twitter.com/intent/tweet?text=I just joined the @obscura_xyz waitlist! No more liquidation cliffs with GAD protection. Join me: ${typeof window !== 'undefined' ? window.location.origin : ''}/waitlist?ref=${entry.code}`}
+                href={`https://twitter.com/intent/tweet?text=I just joined the @big14way waitlist! No more liquidation cliffs with GAD protection. Join me: ${typeof window !== 'undefined' ? window.location.origin : ''}/waitlist?ref=${entry.code}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-[#0a2535] hover:bg-[#1a3545] text-white rounded-xl transition-all hover:scale-105"
@@ -313,7 +313,7 @@ export default function WaitlistPage() {
             <img src="/obscura-logo.svg" alt="Obscura" className="h-6 w-auto" />
           </div>
           <div className="flex gap-8 text-sm">
-            <a href="https://x.com/obscura_xyz" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">
+            <a href="https://x.com/big14way" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">
               Twitter
             </a>
             <a href="https://t.me/obscura_community" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">

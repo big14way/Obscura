@@ -66,7 +66,7 @@ export async function GET() {
       links: {
         docs: 'https://docs.obscura.io/agents',
         website: 'https://evm.obscura.io',
-        twitter: 'https://x.com/obscura_xyz',
+        twitter: 'https://x.com/big14way',
       },
       
       // Call to action
@@ -196,9 +196,9 @@ export async function POST(request: Request) {
             code: result.entry!.code,
           },
           {
-            action: 'Follow @obscura_xyz',
+            action: 'Follow @big14way',
             why: 'Get launch updates',
-            link: 'https://x.com/obscura_xyz',
+            link: 'https://x.com/big14way',
           },
         ],
       },

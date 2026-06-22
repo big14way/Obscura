@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Obscura | Confidential Agentic Credit",
     description: "Confidential agentic credit on the Zama FHEVM — encrypted debt, credit and x402 payments, settled in ERC-7984 cUSDT.",
-    creator: "@obscura_xyz",
+    creator: "@big14way",
     images: ["/og-image.png"],
   },
   robots: {

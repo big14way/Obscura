@@ -15,7 +15,7 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-[#8a9aa8] hover:text-white transition-all hover:scale-105 text-sm">Features</a>
             <a href="#how-it-works" className="text-[#8a9aa8] hover:text-white transition-all hover:scale-105 text-sm">How it Works</a>
-            <a href="https://github.com/obscuracrypto/obscura" target="_blank" className="text-[#8a9aa8] hover:text-white transition-all hover:scale-105 text-sm">Docs</a>
+            <a href="https://github.com/big14way/Obscura" target="_blank" className="text-[#8a9aa8] hover:text-white transition-all hover:scale-105 text-sm">Docs</a>
           </div>
 
           <div className="flex items-center gap-3">
@@ -45,7 +45,7 @@ export default function Home() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            x402 Hackathon
+            Confidential x402 · Zama FHE
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-fade-in-up animate-delay-100">
@@ -286,7 +286,7 @@ export default function Home() {
                   Live Demo
                 </a>
                 <a
-                  href="https://github.com/obscuracrypto/obscura"
+                  href="https://github.com/big14way/Obscura"
                   target="_blank"
                   className="h-14 px-8 bg-[#0a2535] hover:bg-[#0d3040] border border-[#1a3545] hover:border-[#FF4E00]/30 font-semibold rounded-xl transition-all hover:scale-105 flex items-center justify-center"
                 >
@@ -305,10 +305,10 @@ export default function Home() {
             <img src="/obscura-logo.svg" alt="Obscura" className="h-6 w-auto" />
           </div>
           <div className="flex gap-8 text-sm">
-            <a href="https://x.com/obscura_xyz" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">
+            <a href="https://x.com/big14way" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">
               Twitter
             </a>
-            <a href="https://github.com/obscuracrypto/obscura" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">
+            <a href="https://github.com/big14way/Obscura" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">
               GitHub
             </a>
             <a href="https://www.zama.org/" target="_blank" className="text-[#5a6a78] hover:text-[#FF4E00] transition-colors">
