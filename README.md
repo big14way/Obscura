@@ -6,7 +6,7 @@
 
 > 📄 **Zama port:** this repo was re‑architected from a plaintext build into a **confidential** agentic‑credit dApp for the **Zama Developer Program — Mainnet Season 3 (Builder Track)**. See **[ZAMA_PORT.md](ZAMA_PORT.md)** for the full re‑architecture plan.
 
-🌐 **Live Demo:** https://evm.obscura.io
+🌐 **Run locally:** `cd app && npm run dev` → http://localhost:3000 _(not yet deployed to a public URL)_
 
 ---
 
@@ -85,7 +85,7 @@ To redeploy your own set: `npm run deploy` → paste the printed `NEXT_PUBLIC_*`
 
 ### 1. Run the Demo
 
-1. Open https://evm.obscura.io
+1. Run locally: `cd app && npm run dev`, then open http://localhost:3000
 2. Connect MetaMask on **Ethereum Sepolia**
 3. Get confidential test tokens via **Faucet** (mints cUSDT / cWETH / cUSDC)
 4. Set operator → Supply (encrypted) → Borrow (encrypted) → Decrypt position → Repay → Withdraw
@@ -277,7 +277,7 @@ obscura/
 
 ## Links
 
-- 🌐 **Live Demo:** https://evm.obscura.io
+- 🌐 **Run locally:** `cd app && npm run dev` → http://localhost:3000 _(not yet deployed to a public URL)_
 - 🔐 **Zama Protocol / FHEVM:** https://docs.zama.ai
 - 🔎 **Explorer:** https://sepolia.etherscan.io
 

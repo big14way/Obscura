@@ -23,7 +23,7 @@ export default function Home() {
               Dashboard
             </Link>
             <a
-              href="https://evm.obscura.io"
+              href="/dashboard"
               target="_blank"
               className="h-9 px-4 bg-[#FF4E00] hover:bg-[#E64500] text-white text-sm font-medium rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-[#FF4E00]/20 flex items-center glow-btn"
             >
@@ -279,7 +279,7 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://evm.obscura.io"
+                  href="/dashboard"
                   target="_blank"
                   className="h-14 px-8 bg-[#FF4E00] hover:bg-[#E64500] text-white font-semibold rounded-xl transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#FF4E00]/30 flex items-center justify-center glow-btn"
                 >

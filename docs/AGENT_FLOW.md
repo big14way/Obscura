@@ -29,7 +29,7 @@ const { address, connected, encrypt, decrypt } = useObscura();
 ```
 
 ## 2) Get confidential test tokens (Faucet)
-Open: **https://evm.obscura.io/faucet** — mints **cUSDT / cWETH / cUSDC** (`ConfidentialMockToken.mint`).
+Open: **http://localhost:3000/faucet** — mints **cUSDT / cWETH / cUSDC** (`ConfidentialMockToken.mint`).
 
 **Token decimals**
 - cUSDT: 6
@@ -184,7 +184,7 @@ await writeContractAsync({ address: CONTRACTS.lp, abi: lpAbi, functionName: 'dep
 ```
 
 ## 7) UI alternative (no code)
-- Go to **https://evm.obscura.io**
+- Go to **http://localhost:3000**
 - Connect MetaMask on **Ethereum Sepolia**
 - setOperator → deposit cWETH/cUSDC as encrypted collateral
 - Encrypted borrow / repay cUSDT

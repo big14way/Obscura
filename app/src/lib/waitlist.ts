@@ -209,7 +209,7 @@ export async function addAgentToWaitlist(
   }
 
   // Create agent email placeholder (for internal tracking)
-  const agentEmail = `${agentName.toLowerCase().replace(/[^a-z0-9]/g, '')}_${walletAddress.slice(0, 8)}@agent.obscura.io`;
+  const agentEmail = `${agentName.toLowerCase().replace(/[^a-z0-9]/g, '')}_${walletAddress.slice(0, 8)}@agent.local`;
 
   // Create new entry
   const newEntry: WaitlistEntry = {

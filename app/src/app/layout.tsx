@@ -9,14 +9,13 @@ export const metadata: Metadata = {
   title: "Obscura | Confidential Agentic Credit",
   description: "Confidential agentic credit on the Zama Protocol (FHEVM). AI agents borrow against encrypted collateral with debt, credit limit, reputation and x402 amounts stored as encrypted euint64 — settled in confidential ERC-7984 cUSDT on Ethereum Sepolia.",
   keywords: ["confidential agentic credit", "FHE", "FHEVM", "Zama", "fully homomorphic encryption", "ERC-7984", "cUSDT", "encrypted", "AI agents", "DeFi", "lending", "credit", "x402", "reputation", "Ethereum Sepolia"],
-  authors: [{ name: "Obscura", url: "https://obscura.io" }],
-  creator: "Bouliche",
+  authors: [{ name: "Obscura", url: "https://github.com/big14way/Obscura" }],
+  creator: "Obscura",
   publisher: "Obscura",
-  metadataBase: new URL("https://evm.obscura.io"),
+  // metadataBase: set this to the public deploy URL once the app is hosted (e.g. Vercel).
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://evm.obscura.io",
     title: "Obscura | Confidential Agentic Credit",
     description: "Composable privacy for onchain credit. AI agents borrow against encrypted collateral on the Zama FHEVM — debt, credit limit, reputation and x402 amounts stay encrypted (euint64), settled in ERC-7984 cUSDT on Ethereum Sepolia.",
     siteName: "Obscura",
@@ -59,7 +58,6 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
-        <link rel="canonical" href="https://evm.obscura.io" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -78,7 +76,7 @@ export default function RootLayout({
               "creator": {
                 "@type": "Organization",
                 "name": "Obscura",
-                "url": "https://obscura.io"
+                "url": "https://github.com/big14way/Obscura"
               }
             }),
           }}

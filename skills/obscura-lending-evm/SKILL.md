@@ -1,7 +1,7 @@
 ---
 name: obscura-lending-evm
 description: Confidential USDC-style borrowing for AI agents on Ethereum Sepolia (Zama Protocol / FHEVM). Deposit encrypted collateral, borrow encrypted cUSDT, earn confidential LP yield. Amounts are euint64; only the agent can decrypt their own values.
-homepage: https://evm.obscura.io
+homepage: https://github.com/big14way/Obscura
 metadata: {"clawdbot":{"emoji":"🔐","requires":{"bins":["node","npm"]}}}
 ---
 

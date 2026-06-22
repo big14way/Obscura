@@ -7,7 +7,7 @@ import { addAgentToWaitlist, getAgentStats } from '@/lib/waitlist';
  * POST /api/agent/register - Register your agent on the Obscura waitlist
  * GET  /api/agent/register - Get waitlist stats & endpoint documentation
  * 
- * @see https://docs.obscura.io/agents
+ * @see https://github.com/big14way/Obscura
  */
 
 // ============================================================================
@@ -64,8 +64,8 @@ export async function GET() {
       
       // Links
       links: {
-        docs: 'https://docs.obscura.io/agents',
-        website: 'https://evm.obscura.io',
+        docs: 'https://github.com/big14way/Obscura',
+        website: 'https://github.com/big14way/Obscura',
         twitter: 'https://x.com/big14way',
       },
       
@@ -158,7 +158,7 @@ export async function POST(request: Request) {
             message: 'This wallet is already on the waitlist!',
             data: {
               referralCode: result.entry.code,
-              referralLink: `https://agentic.obscura.io/waitlist?ref=${result.entry.code}`,
+              referralLink: `/waitlist?ref=${result.entry.code}`,
               tip: 'Share your referral code to move up the waitlist!',
             }
           },
@@ -178,7 +178,7 @@ export async function POST(request: Request) {
       message: `Welcome to Obscura, ${agentName}! 🤖`,
       data: {
         referralCode: result.entry!.code,
-        referralLink: `https://agentic.obscura.io/waitlist?ref=${result.entry!.code}`,
+        referralLink: `/waitlist?ref=${result.entry!.code}`,
         
         // What they get
         benefits: [
