@@ -438,14 +438,14 @@ function Dashboard() {
                               depositAsset === asset ? "bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]" : "bg-[#0B0614] text-[#8F84A8] border border-[#2A1B40] hover:border-[#8B5CF6]/30"
                             }`}
                           >
-                            {asset}
+                            c{asset}
                           </button>
                         ))}
                       </div>
                       <div className="flex gap-3">
                         <div className="flex-1 relative">
                           <input type="number" placeholder="0.00" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} className="w-full h-14 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#8B5CF6] transition-all" />
-                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">{depositAsset}</span>
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">c{depositAsset}</span>
                         </div>
                         <div className="h-14 px-4 flex items-center text-xs text-[#8F84A8]">Operator + encrypt</div>
                         <button onClick={() => safeTx(async () => {
@@ -543,13 +543,13 @@ function Dashboard() {
                       <p className="text-sm text-[#8F84A8] mb-6">Withdraw your supplied encrypted collateral.</p>
                       <div className="flex gap-2 mb-4">
                         {(["WETH", "WBTC"] as const).map((asset) => (
-                          <button key={asset} onClick={() => setWithdrawAsset(asset)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${withdrawAsset === asset ? "bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]" : "bg-[#0B0614] text-[#8F84A8] border border-[#2A1B40] hover:border-[#8B5CF6]/30"}`}>{asset}</button>
+                          <button key={asset} onClick={() => setWithdrawAsset(asset)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${withdrawAsset === asset ? "bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]" : "bg-[#0B0614] text-[#8F84A8] border border-[#2A1B40] hover:border-[#8B5CF6]/30"}`}>c{asset}</button>
                         ))}
                       </div>
                       <div className="flex gap-3 mb-4">
                         <div className="flex-1 relative">
                           <input type="number" placeholder="0.00" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} className="w-full h-14 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#8B5CF6] transition-all" />
-                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">{withdrawAsset}</span>
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">c{withdrawAsset}</span>
                         </div>
                         <button onClick={() => safeTx(async () => {
                           if (!requireAddress(lending, "Lending")) return;
@@ -563,7 +563,7 @@ function Dashboard() {
                       </div>
                       <div className="p-4 bg-[#0B0614]/50 rounded-xl space-y-2">
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-[#8F84A8]">Deposited {withdrawAsset}</span>
+                          <span className="text-[#8F84A8]">Deposited c{withdrawAsset}</span>
                           <span className="text-white font-semibold flex items-center gap-2">
                             {revealed[withdrawAsset === "WETH" ? "m-collWETH" : "m-collWBTC"] ?? MASK}
                             <button
@@ -695,11 +695,11 @@ function Dashboard() {
                   <div className="mb-4">
                     <div className="text-xs text-[#8F84A8] mb-2">Collateral (encrypted)</div>
                     <div className="text-sm text-white flex items-center justify-between gap-2">
-                      <span>{revealed["m-collWETH"] ?? MASK} WETH</span>
+                      <span>{revealed["m-collWETH"] ?? MASK} cWETH</span>
                       <button onClick={() => reveal("m-collWETH", collWETHHandle, lending, "WETH")} disabled={decrypting["m-collWETH"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                     </div>
                     <div className="text-sm text-white flex items-center justify-between gap-2 mt-1">
-                      <span>{revealed["m-collWBTC"] ?? MASK} WBTC</span>
+                      <span>{revealed["m-collWBTC"] ?? MASK} cWBTC</span>
                       <button onClick={() => reveal("m-collWBTC", collWBTCHandle, lending, "WBTC")} disabled={decrypting["m-collWBTC"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                     </div>
                   </div>

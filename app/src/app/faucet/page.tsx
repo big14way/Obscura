@@ -68,7 +68,7 @@ export default function FaucetPage() {
     setStatus("Approving Obscura (setOperator)...");
     const until = Math.floor(Date.now() / 1000) + 3600; // uint48 unix timestamp (viem maps uint48 -> number)
     try {
-      for (const [token, label] of [[usdc, "cUSDT"], [weth, "cWETH"], [wbtc, "cUSDC"]] as const) {
+      for (const [token, label] of [[usdc, "cUSDT"], [weth, "cWETH"], [wbtc, "cWBTC"]] as const) {
         await sendTx({ address: token, abi: tokenAbi, functionName: "setOperator", args: [lending, until] });
       }
       setStatus("Obscura approved as operator for 1 hour ✓");
@@ -116,10 +116,10 @@ export default function FaucetPage() {
           </div>
 
           <div className="p-4 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
-            <div className="text-sm text-[#A89CC0] mb-2">cUSDC (confidential, WBTC stand-in)</div>
+            <div className="text-sm text-[#A89CC0] mb-2">cWBTC (confidential WBTC, 8d)</div>
             <div className="flex gap-3">
               <input className="flex-1 h-12 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 text-white" value={wbtcAmount} onChange={(e) => setWbtcAmount(e.target.value)} />
-              <button className="h-12 px-5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" disabled={!isConnected} onClick={() => mint(wbtc, wbtcAmount, 8, "cUSDC")}>Mint cUSDC</button>
+              <button className="h-12 px-5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" disabled={!isConnected} onClick={() => mint(wbtc, wbtcAmount, 8, "cWBTC")}>Mint cWBTC</button>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ export default function FaucetPage() {
               setStatus("Minting all confidential tokens...");
               try {
                 await mint(weth, wethAmount, 6, "cWETH");
-                await mint(wbtc, wbtcAmount, 8, "cUSDC");
+                await mint(wbtc, wbtcAmount, 8, "cWBTC");
                 await mint(usdc, usdcAmount, 6, "cUSDT");
                 setStatus("All confidential tokens minted ✓");
               } catch {
