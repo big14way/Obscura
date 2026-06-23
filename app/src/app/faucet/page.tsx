@@ -24,6 +24,9 @@ export default function FaucetPage() {
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { writeContractAsync } = useWriteContract();
+  // Explicit gas limit — FHEVM txs can't be reliably gas-estimated by the wallet.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sendTx = (o: any) => writeContractAsync({ gas: BigInt(2000000), ...o });
 
   const [wethAmount, setWethAmount] = useState("10");
   const [wbtcAmount, setWbtcAmount] = useState("0.1");
@@ -41,7 +44,7 @@ export default function FaucetPage() {
     setStatus(`Minting confidential ${label}...`);
     try {
       const value = BigInt(parseUnits(amount || "0", decimals));
-      await writeContractAsync({ address: token, abi: tokenAbi, functionName: "mint", args: [address, value] });
+      await sendTx({ address: token, abi: tokenAbi, functionName: "mint", args: [address, value] });
       setStatus(`${label} minted (encrypted balance updated)`);
     } catch (e) {
       setStatus(`${label} mint failed`);
@@ -56,7 +59,7 @@ export default function FaucetPage() {
     const until = Math.floor(Date.now() / 1000) + 3600; // uint48 unix timestamp (viem maps uint48 -> number)
     try {
       for (const [token, label] of [[usdc, "cUSDT"], [weth, "cWETH"], [wbtc, "cUSDC"]] as const) {
-        await writeContractAsync({ address: token, abi: tokenAbi, functionName: "setOperator", args: [lending, until] });
+        await sendTx({ address: token, abi: tokenAbi, functionName: "setOperator", args: [lending, until] });
       }
       setStatus("Obscura approved as operator for 1 hour ✓");
     } catch {

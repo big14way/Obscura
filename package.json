@@ -23,6 +23,7 @@
   "dependencies": {
     "@fhevm/solidity": "^0.11.1",
     "@openzeppelin/confidential-contracts": "^0.4.1",
-    "@openzeppelin/contracts": "^5.0.2"
+    "@openzeppelin/contracts": "^5.0.2",
+    "@zama-fhe/relayer-sdk": "^0.4.4"
   }
 }

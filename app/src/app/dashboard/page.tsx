@@ -149,6 +149,11 @@ function Dashboard() {
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { writeContractAsync } = useWriteContract();
+  // FHEVM txs can't be reliably gas-estimated by wallets (the coprocessor/proof path isn't
+  // simulatable), which makes MetaMask submit a bad limit ("gas limit too high"). Set an
+  // explicit limit on every write — measured heaviest op is ~1.3M; 5M is safe headroom.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sendTx = (o: any) => writeContractAsync({ gas: BigInt(5000000), ...o });
   const publicClient = usePublicClient();
   const { encrypt, decrypt } = useObscura();
 
@@ -233,7 +238,7 @@ function Dashboard() {
   const ensurePosition = async () => {
     if (positionInitialized) return;
     try {
-      const hash = await writeContractAsync({ address: lending, abi: lendingAbi, functionName: "initializePosition" });
+      const hash = await sendTx({ address: lending, abi: lendingAbi, functionName: "initializePosition" });
       if (publicClient) await publicClient.waitForTransactionReceipt({ hash });
     } catch {
       // ignore "already initialized" errors
@@ -245,7 +250,7 @@ function Dashboard() {
   // ERC-7984 authorization: grant the spender operator rights for 1 hour (replaces ERC-20 approve).
   const setOperator = async (token: `0x${string}`, spender: `0x${string}`) => {
     const until = Math.floor(Date.now() / 1000) + 3600; // now + 1 hour (uint48 unix-ts)
-    const hash = await writeContractAsync({ address: token, abi: tokenAbi, functionName: "setOperator", args: [spender, until] });
+    const hash = await sendTx({ address: token, abi: tokenAbi, functionName: "setOperator", args: [spender, until] });
     if (publicClient) await publicClient.waitForTransactionReceipt({ hash });
   };
 
@@ -428,7 +433,7 @@ function Dashboard() {
                           // 2) Encrypt amount against the contract that reads it (LENDING)
                           const { handle, inputProof } = await encrypt(lending, amt);
                           // 3) Confidential deposit
-                          return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "deposit", args: [token, handle, inputProof] });
+                          return sendTx({ address: lending, abi: lendingAbi, functionName: "deposit", args: [token, handle, inputProof] });
                         }, "Supply")}
                           disabled={!depositAmount}
                           className="h-14 px-8 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">
@@ -459,7 +464,7 @@ function Dashboard() {
                           await ensurePosition();
                           const amt = parseUnits(borrowAmount || "0", DECIMALS.USDC);
                           const { handle, inputProof } = await encrypt(lending, amt);
-                          return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "borrow", args: [usdc, handle, inputProof] });
+                          return sendTx({ address: lending, abi: lendingAbi, functionName: "borrow", args: [usdc, handle, inputProof] });
                         }, "Borrow")}
                           disabled={!borrowAmount}
                           className="h-14 px-8 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">
@@ -498,7 +503,7 @@ function Dashboard() {
                           const amt = parseUnits(repayAmount || "0", DECIMALS.USDC);
                           await setOperator(usdc, lending);
                           const { handle, inputProof } = await encrypt(lending, amt);
-                          return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "repay", args: [usdc, handle, inputProof] });
+                          return sendTx({ address: lending, abi: lendingAbi, functionName: "repay", args: [usdc, handle, inputProof] });
                         }, "Repay")}
                           disabled={!repayAmount}
                           className="h-14 px-8 bg-[#4ade80] hover:bg-[#22c55e] text-black font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">Repay</button>
@@ -526,7 +531,7 @@ function Dashboard() {
                           const token = withdrawAsset === "WETH" ? weth : wbtc;
                           const amt = parseUnits(withdrawAmount || "0", decimalsFor(withdrawAsset));
                           const { handle, inputProof } = await encrypt(lending, amt);
-                          return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "withdraw", args: [token, handle, inputProof] });
+                          return sendTx({ address: lending, abi: lendingAbi, functionName: "withdraw", args: [token, handle, inputProof] });
                         }, "Withdraw")}
                         disabled={!withdrawAmount}
                         className="h-14 px-8 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">Withdraw</button>
@@ -570,7 +575,7 @@ function Dashboard() {
                       await ensurePosition();
                       const amt = parseUnits(agentLimitInput || "0", DECIMALS.USDC);
                       const { handle, inputProof } = await encrypt(lending, amt);
-                      await writeContractAsync({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, true, true] });
+                      await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, true, true] });
                       setAgentConfig({ enabled: true, autoRepay: true, x402Enabled: true });
                     }, "Configure agent")} />
                     <AgentButton title="Manual" description="No x402" active={agentConfig.enabled && !agentConfig.x402Enabled} onClick={() => safeTx(async () => {
@@ -578,14 +583,14 @@ function Dashboard() {
                       await ensurePosition();
                       const amt = parseUnits(agentLimitInput || "0", DECIMALS.USDC);
                       const { handle, inputProof } = await encrypt(lending, amt);
-                      await writeContractAsync({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
+                      await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
                       setAgentConfig({ enabled: true, autoRepay: false, x402Enabled: false });
                     }, "Configure agent")} />
                     <AgentButton title="Disable" description="Zero limit" active={!agentConfig.enabled} onClick={() => safeTx(async () => {
                       if (!requireAddress(lending, "Lending")) return;
                       await ensurePosition();
                       const { handle, inputProof } = await encrypt(lending, BigInt(0));
-                      await writeContractAsync({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
+                      await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
                       setAgentConfig({ enabled: false, autoRepay: false, x402Enabled: false });
                     }, "Configure agent")} />
                   </div>
@@ -629,7 +634,7 @@ function Dashboard() {
                       // Encrypt the payment amount against the X402 contract (which reads it)
                       const { handle, inputProof } = await encrypt(x402, amt);
                       // Record the confidential payment on-chain
-                      return writeContractAsync({
+                      return sendTx({
                         address: x402,
                         abi: x402Abi,
                         functionName: "record",
@@ -786,11 +791,11 @@ function Dashboard() {
                           // Authorize LP as operator, encrypt against LP, then deposit
                           await setOperator(usdc, lp);
                           const { handle, inputProof } = await encrypt(lp, amt);
-                          await writeContractAsync({ address: lp, abi: lpAbi, functionName: "deposit", args: [handle, inputProof] });
+                          await sendTx({ address: lp, abi: lpAbi, functionName: "deposit", args: [handle, inputProof] });
                         } else {
                           // Withdraw an encrypted share amount (encrypted against LP)
                           const { handle, inputProof } = await encrypt(lp, amt);
-                          await writeContractAsync({ address: lp, abi: lpAbi, functionName: "withdraw", args: [handle, inputProof] });
+                          await sendTx({ address: lp, abi: lpAbi, functionName: "withdraw", args: [handle, inputProof] });
                         }
                         setLpAmount("");
                       }, lpTab === "deposit" ? "LP deposit" : "LP withdraw")}
