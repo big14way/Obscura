@@ -45,20 +45,20 @@ export default function Home() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            Confidential x402 · Zama FHE
+            Composable Privacy · Built on Zama FHEVM
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-fade-in-up animate-delay-100">
-            Credit Lines
+            Confidential Credit
             <br />
             <span className="gradient-text">for AI Agents</span>
           </h1>
 
           <p className="text-lg md:text-xl text-[#A89CC0] max-w-2xl mx-auto mb-4 leading-relaxed animate-fade-in-up animate-delay-200">
-            Confidential agentic credit. Agents borrow against encrypted collateral, pay via x402, and build on-chain reputation — all amounts stay encrypted with FHE.
+            AI agents borrow against encrypted collateral, settle payments over x402, and earn on-chain reputation — every amount stays encrypted with FHE, so no one can see a position, copy a strategy, or front-run a liquidation.
           </p>
           <p className="text-sm text-[#8F84A8] max-w-2xl mx-auto mb-10 animate-fade-in-up animate-delay-200">
-            Composable privacy for onchain credit. Encrypted collateral → Confidential credit → Private payments → Reputation.
+            Composable privacy is the key: the protocol computes LTV, limits and deleveraging directly on encrypted data. Encrypted collateral → confidential borrowing → private x402 payments → encrypted reputation.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-300">
@@ -86,23 +86,23 @@ export default function Home() {
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-6">
           <div className="text-center group">
             <div className="text-3xl md:text-4xl font-bold text-[#8B5CF6] mb-2 group-hover:scale-110 transition-transform">x402</div>
-            <div className="text-xs text-[#6E6486]">Native Payments</div>
+            <div className="text-xs text-[#6E6486]">Native agent payments</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl md:text-4xl font-bold text-[#8B5CF6] mb-2 group-hover:scale-110 transition-transform">FHE</div>
-            <div className="text-xs text-[#6E6486]">Encrypted</div>
+            <div className="text-xs text-[#6E6486]">Compute on ciphertext</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl md:text-4xl font-bold text-[#8B5CF6] mb-2 group-hover:scale-110 transition-transform">euint64</div>
-            <div className="text-xs text-[#6E6486]">On-Chain Values</div>
+            <div className="text-xs text-[#6E6486]">Encrypted on-chain</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl md:text-4xl font-bold text-[#8B5CF6] mb-2 group-hover:scale-110 transition-transform">7984</div>
-            <div className="text-xs text-[#6E6486]">ERC cUSDT</div>
+            <div className="text-xs text-[#6E6486]">cUSDT settlement</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl md:text-4xl font-bold text-[#8B5CF6] mb-2 group-hover:scale-110 transition-transform">Zama</div>
-            <div className="text-xs text-[#6E6486]">Ethereum Sepolia</div>
+            <div className="text-xs text-[#6E6486]">Live on Ethereum Sepolia</div>
           </div>
         </div>
       </section>
@@ -111,19 +111,19 @@ export default function Home() {
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <p className="text-center text-xs text-[#6E6486] uppercase tracking-widest mb-4">Why Zama FHE</p>
-          <h3 className="text-center text-2xl md:text-3xl font-bold mb-8">Confidential computation, composable privacy, settled in cUSDT</h3>
+          <h3 className="text-center text-2xl md:text-3xl font-bold mb-8">Composable privacy — confidential computation, settled in cUSDT</h3>
           <div className="grid md:grid-cols-3 gap-5">
             <div className="p-6 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
               <div className="text-sm font-semibold mb-2">Encrypted on-chain</div>
-              <p className="text-sm text-[#8F84A8]">Debt, collateral, credit limit and reputation live as encrypted euint64 values. Approval and denial of a loan are computationally indistinguishable on-chain.</p>
+              <p className="text-sm text-[#8F84A8]">Debt, collateral, credit limits and reputation are stored as encrypted euint64. A granted loan and a denied one write identical ciphertext — computationally indistinguishable on-chain.</p>
             </div>
             <div className="p-6 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
               <div className="text-sm font-semibold mb-2">Composable privacy</div>
-              <p className="text-sm text-[#8F84A8]">Contracts compute directly on encrypted data via Fully Homomorphic Encryption — no plaintext ever touches the chain.</p>
+              <p className="text-sm text-[#8F84A8]">The protocol computes LTV, health and daily-limit checks directly on encrypted data via Fully Homomorphic Encryption — no plaintext amount ever touches the chain.</p>
             </div>
             <div className="p-6 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
               <div className="text-sm font-semibold mb-2">EIP-712 user decryption</div>
-              <p className="text-sm text-[#8F84A8]">Only the agent can decrypt its own values, settled in confidential ERC-7984 cUSDT on Ethereum Sepolia.</p>
+              <p className="text-sm text-[#8F84A8]">Only the agent can decrypt its own position — and can selectively disclose it to a lender or auditor. Settled in confidential ERC-7984 cUSDT on Ethereum Sepolia.</p>
             </div>
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function Home() {
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">How Agents Pay for Services</h2>
               <p className="text-lg text-[#A89CC0] mb-6 max-w-2xl">
-                HTTP 402 "Payment Required" — agents use their credit lines to pay for APIs, data, and services on-chain, with the payment amount recorded as an encrypted euint64 receipt.
+                HTTP 402 "Payment Required" — agents draw on their credit line to pay for APIs, data and services, with the amount recorded as an encrypted euint64 receipt only the counterparties can read.
               </p>
               <div className="grid md:grid-cols-3 gap-4 mb-8">
                 <div className="p-4 bg-[#0B0614]/60 rounded-xl">
@@ -190,43 +190,43 @@ export default function Home() {
         <div className="max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Full Credit Stack for Agents</h2>
-            <p className="text-[#A89CC0] text-lg">Encrypted collateral → Borrow → Pay → Build reputation → Better rates — all confidential</p>
+            <p className="text-[#A89CC0] text-lg">Encrypted collateral → borrow → pay → build reputation → better rates — every step confidential, composable, on-chain.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FeatureCard
               title="Confidential x402"
-              description="Encrypted on-chain receipts for HTTP 402 flows. Agents pay, servers verify, payment amounts stay private."
+              description="Encrypted on-chain receipts for HTTP-402 flows. Agents pay, servers verify — amounts stay private to the counterparties."
             >
               <IconPayment />
             </FeatureCard>
             <FeatureCard
               title="Encrypted Credit Lines"
-              description="Agents borrow confidential cUSDT against encrypted collateral. Credit limits are euint64 — approval and denial are indistinguishable on-chain."
+              description="Agents borrow confidential cUSDT against encrypted collateral. Limits are euint64, and an approved borrow is indistinguishable from a denied one on-chain."
             >
               <IconRobot />
             </FeatureCard>
             <FeatureCard
               title="Encrypted Reputation"
-              description="Credit score stored as an encrypted euint64 from repayment history. Only the agent can decrypt it via EIP-712."
+              description="An euint64 credit score built from on-chain repayment history. Only the agent can decrypt it (EIP-712) — or disclose it to a lender."
             >
               <IconStar />
             </FeatureCard>
             <FeatureCard
               title="Compute on Ciphertext"
-              description="Contracts run directly on encrypted euint64 values via Fully Homomorphic Encryption — no plaintext ever touches the chain."
+              description="Contracts run LTV, health and limit checks directly on encrypted euint64 via Fully Homomorphic Encryption — no plaintext ever touches the chain."
             >
               <IconBolt />
             </FeatureCard>
             <FeatureCard
               title="Gradual Deleveraging"
-              description="No sudden liquidations. Positions unwound gradually on encrypted state, protecting from MEV."
+              description="No sudden liquidations. Positions unwind gradually on encrypted state — permissionless to crank, yet leak-free and MEV-resistant."
             >
               <IconShield />
             </FeatureCard>
             <FeatureCard
               title="Confidential LP Yield"
-              description="Provide liquidity, earn yield. Encrypted vault shares for automated strategies."
+              description="Supply liquidity for encrypted ERC-7984 vault shares — your position size stays private."
             >
               <IconLink />
             </FeatureCard>
@@ -272,10 +272,10 @@ export default function Home() {
 
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Build Agentic Commerce
+                Composable Privacy for Onchain Credit
               </h2>
               <p className="text-[#A89CC0] mb-10 max-w-lg mx-auto text-lg">
-                Confidential x402 payments + encrypted credit + reputation. The full privacy-preserving stack for agents that buy and sell.
+                Confidential credit, x402 payments and reputation — the privacy-preserving stack for the agentic economy, built on the Zama Protocol.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
