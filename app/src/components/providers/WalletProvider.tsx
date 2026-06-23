@@ -13,7 +13,7 @@ interface Props {
 // Ethereum Sepolia — the network with the Zama FHEVM coprocessor.
 const config = createConfig({
   chains: [sepolia],
-  connectors: [injected()],
+  connectors: [injected({ target: 'metaMask' })],
   transports: {
     [sepolia.id]: http(process.env.NEXT_PUBLIC_RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com'),
   },
