@@ -284,8 +284,11 @@ function Dashboard() {
       }
       showToast(`${label} confirmed`, "success");
       refreshAll();
-    } catch {
-      showToast(`${label} failed`, "error");
+    } catch (e: unknown) {
+      const err = e as { shortMessage?: string; message?: string };
+      const msg = err?.shortMessage || err?.message || String(e);
+      console.error(`${label} failed:`, e);
+      showToast(`${label} failed: ${msg.slice(0, 140)}`, "error");
     }
   }
 

@@ -9,6 +9,12 @@ import type { WalletClient } from 'viem';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let instancePromise: Promise<any> | null = null;
 
+// Read the FHE public key from Sepolia via a plain RPC — NOT window.ethereum. A second wallet
+// extension (e.g. HashPack) can own window.ethereum and point at the wrong chain, which makes
+// createInstance/encrypt fail before any tx is sent. Encryption needs the chain's FHE key + the
+// relayer; it does not need the wallet (the wallet only signs the eventual tx / EIP-712 decrypt).
+const FHE_RPC = process.env.NEXT_PUBLIC_RPC_URL || 'https://sepolia.drpc.org';
+
 /** Lazily init the TFHE WASM + relayer instance (client-only). */
 export async function getFheInstance() {
   if (typeof window === 'undefined') throw new Error('FHE instance is client-only');
@@ -17,8 +23,7 @@ export async function getFheInstance() {
       // `initSDK` is exported ONLY from the /bundle (web) entry.
       const { initSDK, createInstance, SepoliaConfig } = await import('@zama-fhe/relayer-sdk/bundle');
       await initSDK();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return createInstance({ ...SepoliaConfig, network: (window as any).ethereum });
+      return createInstance({ ...SepoliaConfig, network: FHE_RPC });
     })();
   }
   return instancePromise;
