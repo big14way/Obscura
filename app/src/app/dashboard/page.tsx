@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useAccount, useConnect, useDisconnect, useWriteContract, useReadContract, usePublicClient } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useWriteContract, useReadContract, usePublicClient, useChainId, useSwitchChain } from "wagmi";
 import { injected } from "wagmi/connectors";
+import { sepolia } from "wagmi/chains";
 import Link from "next/link";
 import { parseUnits, formatUnits } from "viem";
 import { CONTRACTS, SEPOLIA_CONFIG } from "@/lib/evmContracts";
@@ -156,6 +157,9 @@ function Dashboard() {
   const sendTx = (o: any) => writeContractAsync({ gas: BigInt(5000000), ...o });
   const publicClient = usePublicClient();
   const { encrypt, decrypt } = useObscura();
+  const chainId = useChainId();
+  const { switchChain } = useSwitchChain();
+  const wrongNetwork = isConnected && chainId !== sepolia.id;
 
   const usdc = CONTRACTS.usdc as `0x${string}`;
   const lending = CONTRACTS.lending as `0x${string}`;
@@ -210,6 +214,11 @@ function Dashboard() {
   // connect screen, then the dashboard renders post-hydration).
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  // Obscura is only deployed on Ethereum Sepolia — auto-switch the wallet there if it's elsewhere.
+  useEffect(() => {
+    if (mounted && isConnected && chainId !== sepolia.id) switchChain?.({ chainId: sepolia.id });
+  }, [mounted, isConnected, chainId, switchChain]);
 
   const refreshAll = () => {
     refetchCollWBTC();
@@ -309,7 +318,7 @@ function Dashboard() {
   if (!mounted || !isConnected) {
     return (
       <div className="min-h-screen bg-[#0B0614] text-white flex flex-col gradient-bg">
-        <Nav connected={false} onConnect={() => connect({ connector: injected({ target: 'metaMask' }) })} />
+        <Nav connected={false} onConnect={() => connect({ connector: injected({ target: 'metaMask' }), chainId: sepolia.id })} />
         <div className="flex-1 flex flex-col items-center justify-center px-6">
           <div className="relative">
             <div className="absolute inset-0 bg-[#8B5CF6]/20 rounded-full blur-3xl scale-150"></div>
@@ -319,7 +328,7 @@ function Dashboard() {
           <p className="text-[#8F84A8] mb-8 text-center max-w-sm">
             Connect MetaMask to use Obscura — composable, confidential agentic credit on Ethereum Sepolia. Your debt, collateral and reputation stay encrypted; only you can decrypt them.
           </p>
-          <button className="!bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl h-14 px-8" onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}>
+          <button className="!bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl h-14 px-8" onClick={() => connect({ connector: injected({ target: 'metaMask' }), chainId: sepolia.id })}>
             Connect MetaMask
           </button>
         </div>
@@ -332,11 +341,18 @@ function Dashboard() {
       <Nav connected address={address} onConnect={() => disconnect()} />
 
       <div className="max-w-6xl mx-auto px-6 pt-20 pb-8">
+        {/* Wrong-network banner */}
+        {wrongNetwork && (
+          <div className="mb-4 p-4 bg-red-500/10 border border-red-500/40 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-sm text-red-300">⚠️ Wrong network detected. Obscura runs on <b>Ethereum Sepolia</b> — switch to continue.</span>
+            <button onClick={() => switchChain?.({ chainId: sepolia.id })} className="h-9 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-sm font-semibold rounded-lg whitespace-nowrap">Switch to Sepolia</button>
+          </div>
+        )}
         {/* Confidentiality banner */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4 bg-[#160C24]/50 border border-[#2A1B40] rounded-xl">
           <div className="text-center">
             <div className="text-xs text-[#8F84A8] uppercase tracking-wider">Network</div>
-            <div className="text-lg font-bold text-white">{SEPOLIA_CONFIG.name}</div>
+            <div className={`text-lg font-bold ${wrongNetwork ? "text-red-400" : "text-white"}`}>{wrongNetwork ? "Wrong network" : SEPOLIA_CONFIG.name}</div>
           </div>
           <div className="text-center border-x border-[#2A1B40]">
             <div className="text-xs text-[#8F84A8] uppercase tracking-wider">Confidentiality</div>

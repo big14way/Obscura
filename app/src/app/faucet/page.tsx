@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { useAccount, useConnect, useDisconnect, useWriteContract } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useWriteContract, useChainId, useSwitchChain } from "wagmi";
 import { injected } from "wagmi/connectors";
+import { sepolia } from "wagmi/chains";
 import { parseUnits } from "viem";
 import { CONTRACTS, SEPOLIA_CONFIG, WRAPPERS_REGISTRY } from "@/lib/evmContracts";
 
@@ -30,6 +31,12 @@ export default function FaucetPage() {
   // gate wallet UI until mount to avoid SSR/client hydration mismatch (wagmi reconnects on client)
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+  const chainId = useChainId();
+  const { switchChain } = useSwitchChain();
+  const wrongNetwork = isConnected && chainId !== sepolia.id;
+  useEffect(() => {
+    if (mounted && isConnected && chainId !== sepolia.id) switchChain?.({ chainId: sepolia.id });
+  }, [mounted, isConnected, chainId, switchChain]);
 
   const [wethAmount, setWethAmount] = useState("10");
   const [wbtcAmount, setWbtcAmount] = useState("0.1");
@@ -86,11 +93,15 @@ export default function FaucetPage() {
 
         <div className="mt-6 flex items-center gap-3">
           {(!mounted || !isConnected) ? (
-            <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}>Connect MetaMask</button>
+            <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => connect({ connector: injected({ target: 'metaMask' }), chainId: sepolia.id })}>Connect MetaMask</button>
           ) : (
             <>
               <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => disconnect()}>{address?.slice(0, 6)}…{address?.slice(-4)}</button>
-              <span className="text-sm text-[#A89CC0]">Connected · {SEPOLIA_CONFIG.name}</span>
+              {wrongNetwork ? (
+                <button className="h-10 px-4 bg-red-500/20 border border-red-500/40 text-red-300 rounded-xl font-semibold" onClick={() => switchChain?.({ chainId: sepolia.id })}>⚠️ Switch to Sepolia</button>
+              ) : (
+                <span className="text-sm text-[#A89CC0]">Connected · {SEPOLIA_CONFIG.name}</span>
+              )}
             </>
           )}
         </div>
