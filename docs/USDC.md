@@ -61,6 +61,6 @@ await writeContract({
 |-------|---------|-----|
 | cUSDT (`CONTRACTS.usdc`) | settlement / borrow asset | borrow & repay |
 | cWETH (`CONTRACTS.weth`) | collateral | deposit |
-| cUSDC (`CONTRACTS.wbtc`) | collateral (stand-in) | deposit |
+| cWBTC (`CONTRACTS.wbtc`) | collateral (stand-in) | deposit |
 
 All three are `ConfidentialMockToken` (ERC-7984) instances with encrypted balances.

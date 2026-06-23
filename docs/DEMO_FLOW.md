@@ -5,7 +5,7 @@
 ### Setup (30s)
 1. Open http://localhost:3000
 2. Connect MetaMask on **Ethereum Sepolia** (chain ID `11155111`)
-3. Go to **Faucet** → mint confidential tokens (**cUSDT / cWETH / cUSDC**). The faucet calls `mint(to, amount)` on each `ConfidentialMockToken`.
+3. Go to **Faucet** → mint confidential tokens (**cUSDT / cWETH / cWBTC**). The faucet calls `mint(to, amount)` on each `ConfidentialMockToken`.
 
 ### Confidential Credit Flow (2.5min)
 1. Go to **Dashboard**

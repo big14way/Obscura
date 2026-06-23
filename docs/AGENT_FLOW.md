@@ -29,12 +29,12 @@ const { address, connected, encrypt, decrypt } = useObscura();
 ```
 
 ## 2) Get confidential test tokens (Faucet)
-Open: **http://localhost:3000/faucet** — mints **cUSDT / cWETH / cUSDC** (`ConfidentialMockToken.mint`).
+Open: **http://localhost:3000/faucet** — mints **cUSDT / cWETH / cWBTC** (`ConfidentialMockToken.mint`).
 
 **Token decimals**
 - cUSDT: 6
 - cWETH: 6
-- cUSDC: 6
+- cWBTC: 8
 
 Balances are encrypted: `confidentialBalanceOf(address)` returns a `bytes32` handle, decrypt it with `decrypt(handle, tokenAddress)`.
 
@@ -53,7 +53,7 @@ Balances are encrypted: `confidentialBalanceOf(address)` returns a `bytes32` han
 ## 4) Collateral → Borrow → Repay → Withdraw
 ### Steps
 1. **Initialize** position
-2. **setOperator** collateral (cWETH/cUSDC) → LENDING
+2. **setOperator** collateral (cWETH/cWBTC) → LENDING
 3. **Encrypt + deposit** collateral
 4. **Encrypt + borrow** cUSDT
 5. **setOperator** cUSDT → LENDING, then **encrypt + repay**
@@ -186,7 +186,7 @@ await writeContractAsync({ address: CONTRACTS.lp, abi: lpAbi, functionName: 'dep
 ## 7) UI alternative (no code)
 - Go to **http://localhost:3000**
 - Connect MetaMask on **Ethereum Sepolia**
-- setOperator → deposit cWETH/cUSDC as encrypted collateral
+- setOperator → deposit cWETH/cWBTC as encrypted collateral
 - Encrypted borrow / repay cUSDT
 - LP deposit/withdraw (encrypted) via the LP section
 - Decrypt any position with the per-card **Decrypt** button (EIP-712)
