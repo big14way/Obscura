@@ -15,15 +15,42 @@ let instancePromise: Promise<any> | null = null;
 // relayer; it does not need the wallet (the wallet only signs the eventual tx / EIP-712 decrypt).
 const FHE_RPC = process.env.NEXT_PUBLIC_RPC_URL || 'https://sepolia.drpc.org';
 
-/** Lazily init the TFHE WASM + relayer instance (client-only). */
+// The relayer SDK is loaded as a self-contained UMD <script> (served from /public), NOT bundled.
+// Importing the npm ESM (/web) makes the bundler inline the 5MB TFHE WASM (turbopack hangs);
+// the /bundle stub just reads window.relayerSDK. So we inject the UMD at runtime and read the
+// global. The UMD fetches its WASM from the site root (/tfhe_bg.wasm, /kms_lib_bg.wasm), which
+// we also serve from /public.
+async function loadRelayerSDK(): Promise<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initSDK: () => Promise<void>; createInstance: (cfg: any) => Promise<any>; SepoliaConfig: any;
+}> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const w = window as any;
+  if (w.relayerSDK) return w.relayerSDK;
+  await new Promise<void>((resolve, reject) => {
+    const id = 'zama-relayer-sdk';
+    const done = () => (w.relayerSDK ? resolve() : reject(new Error('relayer SDK global missing after load')));
+    const existing = document.getElementById(id) as HTMLScriptElement | null;
+    if (existing) { existing.addEventListener('load', done); existing.addEventListener('error', () => reject(new Error('relayer SDK script failed'))); return; }
+    const s = document.createElement('script');
+    s.id = id;
+    s.src = '/relayer-sdk-js.umd.cjs';
+    s.async = true;
+    s.onload = done;
+    s.onerror = () => reject(new Error('relayer SDK script failed to load'));
+    document.head.appendChild(s);
+  });
+  return w.relayerSDK;
+}
+
+/** Lazily load the relayer UMD, init the TFHE WASM, and create the instance (client-only). */
 export async function getFheInstance() {
   if (typeof window === 'undefined') throw new Error('FHE instance is client-only');
   if (!instancePromise) {
     instancePromise = (async () => {
-      // `initSDK` is exported ONLY from the /bundle (web) entry.
-      const { initSDK, createInstance, SepoliaConfig } = await import('@zama-fhe/relayer-sdk/bundle');
-      await initSDK();
-      return createInstance({ ...SepoliaConfig, network: FHE_RPC });
+      const sdk = await loadRelayerSDK();
+      await sdk.initSDK();
+      return sdk.createInstance({ ...sdk.SepoliaConfig, network: FHE_RPC });
     })();
   }
   return instancePromise;
