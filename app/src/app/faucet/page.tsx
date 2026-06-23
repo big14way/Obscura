@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useWriteContract } from "wagmi";
 import { injected } from "wagmi/connectors";
 import { parseUnits } from "viem";
@@ -27,6 +27,9 @@ export default function FaucetPage() {
   // Explicit gas limit — FHEVM txs can't be reliably gas-estimated by the wallet.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendTx = (o: any) => writeContractAsync({ gas: BigInt(2000000), ...o });
+  // gate wallet UI until mount to avoid SSR/client hydration mismatch (wagmi reconnects on client)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const [wethAmount, setWethAmount] = useState("10");
   const [wbtcAmount, setWbtcAmount] = useState("0.1");
@@ -82,7 +85,7 @@ export default function FaucetPage() {
         </div>
 
         <div className="mt-6 flex items-center gap-3">
-          {!isConnected ? (
+          {(!mounted || !isConnected) ? (
             <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => connect({ connector: injected() })}>Connect MetaMask</button>
           ) : (
             <>

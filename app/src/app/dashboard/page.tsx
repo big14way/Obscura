@@ -205,6 +205,12 @@ function Dashboard() {
   });
   const [positionInitialized, setPositionInitialized] = useState(false);
 
+  // Avoid SSR/client hydration mismatch: wagmi reconnects the wallet only on the client, so
+  // gate wallet-dependent UI until after mount (server + first client render both show the
+  // connect screen, then the dashboard renders post-hydration).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const refreshAll = () => {
     refetchCollWBTC();
     refetchCollWETH();
@@ -300,7 +306,7 @@ function Dashboard() {
     }
   };
 
-  if (!isConnected) {
+  if (!mounted || !isConnected) {
     return (
       <div className="min-h-screen bg-[#0B0614] text-white flex flex-col gradient-bg">
         <Nav connected={false} onConnect={() => connect({ connector: injected() })} />
