@@ -306,7 +306,7 @@ function Dashboard() {
           </div>
           <h1 className="text-3xl font-bold mb-3">Connect MetaMask</h1>
           <p className="text-[#8F84A8] mb-8 text-center max-w-sm">
-            Connect MetaMask to access Obscura — confidential agentic credit on Ethereum Sepolia
+            Connect MetaMask to use Obscura — composable, confidential agentic credit on Ethereum Sepolia. Your debt, collateral and reputation stay encrypted; only you can decrypt them.
           </p>
           <button className="!bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl h-14 px-8" onClick={() => connect({ connector: injected() })}>
             Connect MetaMask

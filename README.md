@@ -2,7 +2,7 @@
 
 **Confidential credit infrastructure for AI agents, built on the Zama Protocol (FHEVM) and deployed on Ethereum Sepolia.**
 
-> 🔐 **Composable privacy for onchain credit**: an AI agent's debt, collateral, credit limit, reputation and x402 payment amounts are **encrypted on-chain** (`euint64`) via Fully Homomorphic Encryption. Only the agent can decrypt their own values (EIP-712 user decryption).
+> 🔐 **Composable privacy is the key.** An AI agent's debt, collateral, credit limit, reputation and x402 payment amounts are **encrypted on-chain** (`euint64`) via Fully Homomorphic Encryption — yet the protocol still computes LTV, limits and deleveraging directly over the ciphertext. Only the agent can decrypt its own values (EIP-712), and a granted loan is **indistinguishable from a denied one**, so competitors can't see, copy, or front-run a position.
 
 > 📄 **Zama port:** this repo was re‑architected from a plaintext build into a **confidential** agentic‑credit dApp for the **Zama Developer Program — Mainnet Season 3 (Builder Track)**.
 
@@ -12,14 +12,15 @@
 
 ## What is Obscura?
 
-Obscura is a **confidential lending and credit protocol** for the agentic economy. Every sensitive amount — collateral, debt, credit limit, reputation score, and x402 payment value — lives on-chain as a Fully Homomorphic Encryption ciphertext (`euint64`). Computation happens directly over the encrypted data, so the protocol can enforce credit logic without ever revealing it.
+Obscura is a **confidential lending and credit protocol** for the agentic economy. Every sensitive amount — collateral, debt, credit limit, reputation score, and x402 payment value — lives on-chain as a Fully Homomorphic Encryption ciphertext (`euint64`). Computation happens directly over the encrypted data, so the protocol can enforce credit logic without ever revealing it. Because positions are computationally indistinguishable on-chain, no competing agent can see a balance, copy a strategy, or front-run a liquidation — composability that is impossible without FHE.
 
 - **Encrypted positions** — Collateral, debt and credit limits are stored as `euint64`; balances surface as `bytes32` handles, never plaintext.
-- **Approval == denial** — A loan that is approved and one that is denied are **computationally indistinguishable on-chain**. Observers cannot tell whether an agent borrowed, or how much.
-- **Confidential reputation** — An agent's credit score is encrypted; only the agent can decrypt it via EIP-712.
-- **Confidential x402 payments** — Machine-to-machine payment amounts are recorded as encrypted receipts.
-- **Gradual Auto-Deleveraging (GAD)** — Positions unwind smoothly instead of being hard-liquidated.
-- **Settles in cUSDT** — Confidential ERC-7984 token (`ConfidentialMockToken`).
+- **Approval == denial** — A granted loan and a denied one write **identical ciphertext** on-chain. Observers can't tell whether an agent borrowed, how much, or whether it was approved at all.
+- **Confidential reputation** — An agent's `euint64` credit score is built from on-chain repayment history; only the agent can decrypt it via EIP-712.
+- **Selective disclosure** — An agent can grant a lender or auditor read access to its encrypted score or position without making it public — the compliant‑finance angle.
+- **Confidential x402 payments** — Machine-to-machine payment amounts are recorded as encrypted receipts only the counterparties can read.
+- **Gradual Auto-Deleveraging (GAD)** — Positions unwind smoothly instead of being hard-liquidated — permissionless to crank, yet leak-free and MEV-resistant.
+- **Settles in cUSDT** — The confidential ERC-7984 token the Zama Developer Program itself pays rewards in.
 
 ### The confidential x402 flow
 
