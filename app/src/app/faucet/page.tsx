@@ -65,51 +65,51 @@ export default function FaucetPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#001520] text-white px-6 py-16">
+    <main className="min-h-screen bg-[#0B0614] text-white px-6 py-16">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold">Faucet</h1>
-        <p className="mt-2 text-[#8a9aa8]">
+        <p className="mt-2 text-[#A89CC0]">
           Mint confidential ERC-7984 test tokens on {SEPOLIA_CONFIG.name}. Balances are encrypted on-chain (euint64) — only you can decrypt them.
         </p>
-        <div className="mt-4 p-3 bg-[#FF4E00]/10 border border-[#FF4E00]/30 rounded-xl text-sm text-[#FF4E00]">
+        <div className="mt-4 p-3 bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 rounded-xl text-sm text-[#8B5CF6]">
           ⚠️ If contracts were redeployed, your old tokens are invalid. Mint fresh confidential tokens here.
         </div>
-        <div className="mt-3 p-3 bg-[#051525]/80 border border-[#0a2535] rounded-xl text-xs text-[#8a9aa8]">
-          Note: this faucet mints on the demo ConfidentialMockToken. On the official Sepolia cTokenMocks, you instead acquire confidential balances via the Zama Wrappers Registry <code className="text-[#cfd9e0]">wrap()</code> (<span className="text-[#cfd9e0]">{WRAPPERS_REGISTRY}</span>), which wraps ERC-20 into ERC-7984.
+        <div className="mt-3 p-3 bg-[#160C24]/80 border border-[#2A1B40] rounded-xl text-xs text-[#A89CC0]">
+          Note: this faucet mints on the demo ConfidentialMockToken. On the official Sepolia cTokenMocks, you instead acquire confidential balances via the Zama Wrappers Registry <code className="text-[#D8CFE8]">wrap()</code> (<span className="text-[#D8CFE8]">{WRAPPERS_REGISTRY}</span>), which wraps ERC-20 into ERC-7984.
         </div>
 
         <div className="mt-6 flex items-center gap-3">
           {!isConnected ? (
-            <button className="h-10 px-4 bg-[#FF4E00] hover:bg-[#E64500] text-white rounded-xl font-semibold" onClick={() => connect({ connector: injected() })}>Connect MetaMask</button>
+            <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => connect({ connector: injected() })}>Connect MetaMask</button>
           ) : (
             <>
-              <button className="h-10 px-4 bg-[#FF4E00] hover:bg-[#E64500] text-white rounded-xl font-semibold" onClick={() => disconnect()}>{address?.slice(0, 6)}…{address?.slice(-4)}</button>
-              <span className="text-sm text-[#8a9aa8]">Connected · {SEPOLIA_CONFIG.name}</span>
+              <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => disconnect()}>{address?.slice(0, 6)}…{address?.slice(-4)}</button>
+              <span className="text-sm text-[#A89CC0]">Connected · {SEPOLIA_CONFIG.name}</span>
             </>
           )}
         </div>
 
         <div className="mt-8 space-y-6">
-          <div className="p-4 bg-[#051525]/80 border border-[#0a2535] rounded-2xl">
-            <div className="text-sm text-[#8a9aa8] mb-2">cWETH (confidential WETH)</div>
+          <div className="p-4 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
+            <div className="text-sm text-[#A89CC0] mb-2">cWETH (confidential WETH)</div>
             <div className="flex gap-3">
-              <input className="flex-1 h-12 bg-[#001520] border border-[#0a2535] rounded-xl px-4 text-white" value={wethAmount} onChange={(e) => setWethAmount(e.target.value)} />
-              <button className="h-12 px-5 bg-[#FF4E00] hover:bg-[#E64500] text-white rounded-xl font-semibold" disabled={!isConnected} onClick={() => mint(weth, wethAmount, 6, "cWETH")}>Mint cWETH</button>
+              <input className="flex-1 h-12 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 text-white" value={wethAmount} onChange={(e) => setWethAmount(e.target.value)} />
+              <button className="h-12 px-5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" disabled={!isConnected} onClick={() => mint(weth, wethAmount, 6, "cWETH")}>Mint cWETH</button>
             </div>
           </div>
 
-          <div className="p-4 bg-[#051525]/80 border border-[#0a2535] rounded-2xl">
-            <div className="text-sm text-[#8a9aa8] mb-2">cUSDC (confidential, WBTC stand-in)</div>
+          <div className="p-4 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
+            <div className="text-sm text-[#A89CC0] mb-2">cUSDC (confidential, WBTC stand-in)</div>
             <div className="flex gap-3">
-              <input className="flex-1 h-12 bg-[#001520] border border-[#0a2535] rounded-xl px-4 text-white" value={wbtcAmount} onChange={(e) => setWbtcAmount(e.target.value)} />
-              <button className="h-12 px-5 bg-[#FF4E00] hover:bg-[#E64500] text-white rounded-xl font-semibold" disabled={!isConnected} onClick={() => mint(wbtc, wbtcAmount, 8, "cUSDC")}>Mint cUSDC</button>
+              <input className="flex-1 h-12 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 text-white" value={wbtcAmount} onChange={(e) => setWbtcAmount(e.target.value)} />
+              <button className="h-12 px-5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" disabled={!isConnected} onClick={() => mint(wbtc, wbtcAmount, 8, "cUSDC")}>Mint cUSDC</button>
             </div>
           </div>
 
-          <div className="p-4 bg-[#051525]/80 border border-[#0a2535] rounded-2xl">
-            <div className="text-sm text-[#8a9aa8] mb-2">cUSDT (confidential ERC-7984 settlement token)</div>
+          <div className="p-4 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
+            <div className="text-sm text-[#A89CC0] mb-2">cUSDT (confidential ERC-7984 settlement token)</div>
             <div className="flex gap-3">
-              <input className="flex-1 h-12 bg-[#001520] border border-[#0a2535] rounded-xl px-4 text-white" value={usdcAmount} onChange={(e) => setUsdcAmount(e.target.value)} />
+              <input className="flex-1 h-12 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 text-white" value={usdcAmount} onChange={(e) => setUsdcAmount(e.target.value)} />
               <button className="h-12 px-5 bg-[#4ade80] hover:bg-[#22c55e] text-black rounded-xl font-semibold" disabled={!isConnected} onClick={() => mint(usdc, usdcAmount, 6, "cUSDT")}>Mint cUSDT</button>
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function FaucetPage() {
 
         <div className="mt-6">
           <button
-            className="w-full h-14 bg-gradient-to-r from-[#FF4E00] to-[#FF7E00] hover:from-[#E64500] hover:to-[#E67400] text-white rounded-xl font-bold text-lg transition-all hover:scale-[1.02]"
+            className="w-full h-14 bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] hover:from-[#7C3AED] hover:to-[#8B5CF6] text-white rounded-xl font-bold text-lg transition-all hover:scale-[1.02]"
             disabled={!isConnected}
             onClick={async () => {
               setStatus("Minting all confidential tokens...");
@@ -137,18 +137,18 @@ export default function FaucetPage() {
 
         <div className="mt-4">
           <button
-            className="w-full h-12 bg-[#051525]/80 border border-[#FF4E00]/40 text-[#FF4E00] hover:bg-[#FF4E00]/10 rounded-xl font-semibold transition-all"
+            className="w-full h-12 bg-[#160C24]/80 border border-[#8B5CF6]/40 text-[#8B5CF6] hover:bg-[#8B5CF6]/10 rounded-xl font-semibold transition-all"
             disabled={!isConnected}
             onClick={approveLending}
           >
             Approve Obscura (setOperator · 1h)
           </button>
-          <p className="mt-2 text-xs text-[#8a9aa8]">
+          <p className="mt-2 text-xs text-[#A89CC0]">
             ERC-7984 uses operator approvals instead of ERC-20 allowances. This authorizes the Obscura Lending contract to move your confidential tokens for deposit/repay over the next hour.
           </p>
         </div>
 
-        {status && <div className="mt-4 text-sm text-[#8a9aa8]">{status}</div>}
+        {status && <div className="mt-4 text-sm text-[#A89CC0]">{status}</div>}
       </div>
     </main>
   );

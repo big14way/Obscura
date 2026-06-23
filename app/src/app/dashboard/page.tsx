@@ -37,8 +37,8 @@ export default function DashboardPage() {
 
 function DashboardLoading() {
   return (
-    <div className="min-h-screen bg-[#001520] text-white flex items-center justify-center">
-      <div className="animate-pulse text-[#FF4E00]">Loading...</div>
+    <div className="min-h-screen bg-[#0B0614] text-white flex items-center justify-center">
+      <div className="animate-pulse text-[#8B5CF6]">Loading...</div>
     </div>
   );
 }
@@ -297,18 +297,18 @@ function Dashboard() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-[#001520] text-white flex flex-col gradient-bg">
+      <div className="min-h-screen bg-[#0B0614] text-white flex flex-col gradient-bg">
         <Nav connected={false} onConnect={() => connect({ connector: injected() })} />
         <div className="flex-1 flex flex-col items-center justify-center px-6">
           <div className="relative">
-            <div className="absolute inset-0 bg-[#FF4E00]/20 rounded-full blur-3xl scale-150"></div>
+            <div className="absolute inset-0 bg-[#8B5CF6]/20 rounded-full blur-3xl scale-150"></div>
             <img src="/obscura-logo.svg" alt="Obscura" className="h-16 w-auto mb-6 relative z-10" />
           </div>
           <h1 className="text-3xl font-bold mb-3">Connect MetaMask</h1>
-          <p className="text-[#6a7a88] mb-8 text-center max-w-sm">
+          <p className="text-[#8F84A8] mb-8 text-center max-w-sm">
             Connect MetaMask to access Obscura — confidential agentic credit on Ethereum Sepolia
           </p>
-          <button className="!bg-[#FF4E00] hover:bg-[#E64500] text-white font-semibold rounded-xl h-14 px-8" onClick={() => connect({ connector: injected() })}>
+          <button className="!bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl h-14 px-8" onClick={() => connect({ connector: injected() })}>
             Connect MetaMask
           </button>
         </div>
@@ -317,27 +317,27 @@ function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#001520] text-white gradient-bg">
+    <div className="min-h-screen bg-[#0B0614] text-white gradient-bg">
       <Nav connected address={address} onConnect={() => disconnect()} />
 
       <div className="max-w-6xl mx-auto px-6 pt-20 pb-8">
         {/* Confidentiality banner */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4 bg-[#051525]/50 border border-[#0a2535] rounded-xl">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4 bg-[#160C24]/50 border border-[#2A1B40] rounded-xl">
           <div className="text-center">
-            <div className="text-xs text-[#6a7a88] uppercase tracking-wider">Network</div>
+            <div className="text-xs text-[#8F84A8] uppercase tracking-wider">Network</div>
             <div className="text-lg font-bold text-white">{SEPOLIA_CONFIG.name}</div>
           </div>
-          <div className="text-center border-x border-[#0a2535]">
-            <div className="text-xs text-[#6a7a88] uppercase tracking-wider">Confidentiality</div>
+          <div className="text-center border-x border-[#2A1B40]">
+            <div className="text-xs text-[#8F84A8] uppercase tracking-wider">Confidentiality</div>
             <div className="text-lg font-bold text-white">FHE · euint64</div>
           </div>
-          <div className="text-center border-r border-[#0a2535]">
-            <div className="text-xs text-[#6a7a88] uppercase tracking-wider">Settlement</div>
+          <div className="text-center border-r border-[#2A1B40]">
+            <div className="text-xs text-[#8F84A8] uppercase tracking-wider">Settlement</div>
             <div className="text-lg font-bold text-white">cUSDT (ERC-7984)</div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-[#6a7a88] uppercase tracking-wider">Visibility</div>
-            <div className="text-lg font-bold text-[#FF4E00]">Encrypted</div>
+            <div className="text-xs text-[#8F84A8] uppercase tracking-wider">Visibility</div>
+            <div className="text-lg font-bold text-[#8B5CF6]">Encrypted</div>
           </div>
         </div>
 
@@ -346,7 +346,7 @@ function Dashboard() {
           <button
             onClick={() => setMainTab("borrow")}
             className={`flex-1 py-4 rounded-xl font-medium transition-all ${
-              mainTab === "borrow" ? "bg-[#FF4E00] text-white" : "bg-[#051525]/80 text-[#8a9aa8] border border-[#0a2535] hover:border-[#1a3545] hover:text-white"
+              mainTab === "borrow" ? "bg-[#8B5CF6] text-white" : "bg-[#160C24]/80 text-[#A89CC0] border border-[#2A1B40] hover:border-[#321F4A] hover:text-white"
             }`}
           >
             Borrow
@@ -354,7 +354,7 @@ function Dashboard() {
           <button
             onClick={() => setMainTab("lp")}
             className={`flex-1 py-4 rounded-xl font-medium transition-all ${
-              mainTab === "lp" ? "bg-[#FF4E00] text-white" : "bg-[#051525]/80 text-[#8a9aa8] border border-[#0a2535] hover:border-[#1a3545] hover:text-white"
+              mainTab === "lp" ? "bg-[#8B5CF6] text-white" : "bg-[#160C24]/80 text-[#A89CC0] border border-[#2A1B40] hover:border-[#321F4A] hover:text-white"
             }`}
           >
             Provide Liquidity
@@ -370,7 +370,7 @@ function Dashboard() {
               <DecryptCard label="Collateral WBTC" slot="m-collWBTC" revealed={revealed} decrypting={decrypting}
                 onDecrypt={() => reveal("m-collWBTC", collWBTCHandle, lending, "WBTC")} suffix="WBTC" />
               <DecryptCard label="Borrowed" slot="m-borrow" revealed={revealed} decrypting={decrypting}
-                onDecrypt={() => reveal("m-borrow", borrowUSDCHandle, lending, "USDC")} suffix="cUSDT" color="#FF4E00" />
+                onDecrypt={() => reveal("m-borrow", borrowUSDCHandle, lending, "USDC")} suffix="cUSDT" color="#8B5CF6" />
               <DecryptCard label="Credit Limit" slot="m-limit" revealed={revealed} decrypting={decrypting}
                 onDecrypt={() => reveal("m-limit", limitHandle, lending, "USDC")} suffix="cUSDT" color="#ffd93d" />
               <DecryptCard label="Reputation" slot="m-score" revealed={revealed} decrypting={decrypting}
@@ -379,13 +379,13 @@ function Dashboard() {
 
             <div className="grid lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <div className="flex gap-1 p-1 bg-[#051525] border border-[#0a2535] rounded-xl mb-6">
+                <div className="flex gap-1 p-1 bg-[#160C24] border border-[#2A1B40] rounded-xl mb-6">
                   {(["supply", "borrow", "repay", "withdraw"] as const).map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActionTab(tab)}
                       className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
-                        actionTab === tab ? "bg-[#FF4E00] text-white shadow-lg shadow-[#FF4E00]/20" : "text-[#6a7a88] hover:text-white hover:bg-[#0a2535]"
+                        actionTab === tab ? "bg-[#8B5CF6] text-white shadow-lg shadow-[#8B5CF6]/20" : "text-[#8F84A8] hover:text-white hover:bg-[#2A1B40]"
                       }`}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -393,19 +393,19 @@ function Dashboard() {
                   ))}
                 </div>
 
-                <div className="p-6 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm card-shine">
+                <div className="p-6 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm card-shine">
                   {/* Supply */}
                   {actionTab === "supply" && (
                     <div>
                       <h3 className="text-xl font-semibold mb-2">Supply Collateral</h3>
-                      <p className="text-sm text-[#6a7a88] mb-6">Deposit encrypted collateral to borrow against. The amount is encrypted client-side and stays confidential on-chain.</p>
+                      <p className="text-sm text-[#8F84A8] mb-6">Deposit encrypted collateral to borrow against. The amount is encrypted client-side and stays confidential on-chain.</p>
                       <div className="flex gap-2 mb-4">
                         {(["WETH", "WBTC"] as const).map((asset) => (
                           <button
                             key={asset}
                             onClick={() => setDepositAsset(asset)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                              depositAsset === asset ? "bg-[#FF4E00]/20 text-[#FF4E00] border border-[#FF4E00]" : "bg-[#001520] text-[#6a7a88] border border-[#0a2535] hover:border-[#FF4E00]/30"
+                              depositAsset === asset ? "bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]" : "bg-[#0B0614] text-[#8F84A8] border border-[#2A1B40] hover:border-[#8B5CF6]/30"
                             }`}
                           >
                             {asset}
@@ -414,10 +414,10 @@ function Dashboard() {
                       </div>
                       <div className="flex gap-3">
                         <div className="flex-1 relative">
-                          <input type="number" placeholder="0.00" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} className="w-full h-14 bg-[#001520] border border-[#0a2535] rounded-xl px-4 pr-20 text-white placeholder-[#3a4a58] focus:outline-none focus:border-[#FF4E00] transition-all" />
-                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6a7a88] text-sm font-medium">{depositAsset}</span>
+                          <input type="number" placeholder="0.00" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} className="w-full h-14 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#8B5CF6] transition-all" />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">{depositAsset}</span>
                         </div>
-                        <div className="h-14 px-4 flex items-center text-xs text-[#6a7a88]">Operator + encrypt</div>
+                        <div className="h-14 px-4 flex items-center text-xs text-[#8F84A8]">Operator + encrypt</div>
                         <button onClick={() => safeTx(async () => {
                           if (!requireAddress(lending, "Lending")) return;
                           await ensurePosition();
@@ -431,11 +431,11 @@ function Dashboard() {
                           return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "deposit", args: [token, handle, inputProof] });
                         }, "Supply")}
                           disabled={!depositAmount}
-                          className="h-14 px-8 bg-[#FF4E00] hover:bg-[#E64500] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#0a2535] disabled:text-[#3a4a58] disabled:hover:scale-100">
+                          className="h-14 px-8 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">
                           Supply
                         </button>
                       </div>
-                      <div className="mt-3 text-xs text-[#6a7a88]">Amount encrypted (euint64) — value is computationally indistinguishable on-chain.</div>
+                      <div className="mt-3 text-xs text-[#8F84A8]">Amount encrypted (euint64) — value is computationally indistinguishable on-chain.</div>
                     </div>
                   )}
 
@@ -443,16 +443,16 @@ function Dashboard() {
                   {actionTab === "borrow" && (
                     <div>
                       <h3 className="text-xl font-semibold mb-2">Borrow</h3>
-                      <p className="text-sm text-[#6a7a88] mb-6">Borrow confidential cUSDT against your encrypted collateral. Approval and denial are indistinguishable on-chain.</p>
+                      <p className="text-sm text-[#8F84A8] mb-6">Borrow confidential cUSDT against your encrypted collateral. Approval and denial are indistinguishable on-chain.</p>
                       <div className="flex gap-2 mb-4">
-                        <span className="px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 bg-[#FF4E00]/20 text-[#FF4E00] border border-[#FF4E00]">
+                        <span className="px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]">
                           cUSDT <span className="text-xs opacity-60">confidential</span>
                         </span>
                       </div>
                       <div className="flex gap-3 mb-4">
                         <div className="flex-1 relative">
-                          <input type="number" placeholder="0.00" value={borrowAmount} onChange={(e) => setBorrowAmount(e.target.value)} className="w-full h-14 bg-[#001520] border border-[#0a2535] rounded-xl px-4 pr-20 text-white placeholder-[#3a4a58] focus:outline-none focus:border-[#FF4E00] transition-all" />
-                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6a7a88] text-sm font-medium">cUSDT</span>
+                          <input type="number" placeholder="0.00" value={borrowAmount} onChange={(e) => setBorrowAmount(e.target.value)} className="w-full h-14 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#8B5CF6] transition-all" />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">cUSDT</span>
                         </div>
                         <button onClick={() => safeTx(async () => {
                           if (!requireAddress(lending, "Lending")) return;
@@ -462,23 +462,23 @@ function Dashboard() {
                           return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "borrow", args: [usdc, handle, inputProof] });
                         }, "Borrow")}
                           disabled={!borrowAmount}
-                          className="h-14 px-8 bg-[#FF4E00] hover:bg-[#E64500] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#0a2535] disabled:text-[#3a4a58] disabled:hover:scale-100">
+                          className="h-14 px-8 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">
                           Borrow
                         </button>
                       </div>
-                      <div className="p-4 bg-[#001520]/50 rounded-xl space-y-2">
-                        <div className="flex justify-between text-sm"><span className="text-[#6a7a88]">Credit limit</span><span className="text-[#FF4E00] font-semibold">{revealed["m-limit"] ? `${revealed["m-limit"]} cUSDT` : MASK}</span></div>
-                        <div className="flex justify-between text-sm"><span className="text-[#6a7a88]">Current debt</span><span className="text-white">{revealed["m-borrow"] ? `${revealed["m-borrow"]} cUSDT` : MASK}</span></div>
+                      <div className="p-4 bg-[#0B0614]/50 rounded-xl space-y-2">
+                        <div className="flex justify-between text-sm"><span className="text-[#8F84A8]">Credit limit</span><span className="text-[#8B5CF6] font-semibold">{revealed["m-limit"] ? `${revealed["m-limit"]} cUSDT` : MASK}</span></div>
+                        <div className="flex justify-between text-sm"><span className="text-[#8F84A8]">Current debt</span><span className="text-white">{revealed["m-borrow"] ? `${revealed["m-borrow"]} cUSDT` : MASK}</span></div>
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-[#6a7a88]">Borrowed today</span>
+                          <span className="text-[#8F84A8]">Borrowed today</span>
                           <span className="text-white flex items-center gap-2">
                             {revealed["m-agentBorrowed"] ? `${revealed["m-agentBorrowed"]} cUSDT` : MASK}
-                            <button onClick={() => reveal("m-agentBorrowed", agentBorrowedHandle, lending, "USDC")} disabled={decrypting["m-agentBorrowed"]} className="text-xs text-[#FF4E00] hover:underline">Decrypt</button>
+                            <button onClick={() => reveal("m-agentBorrowed", agentBorrowedHandle, lending, "USDC")} disabled={decrypting["m-agentBorrowed"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                           </span>
                         </div>
-                        <div className="flex justify-between text-sm"><span className="text-[#6a7a88]">Decryption</span><span className="text-white">EIP-712 (agent only)</span></div>
+                        <div className="flex justify-between text-sm"><span className="text-[#8F84A8]">Decryption</span><span className="text-white">EIP-712 (agent only)</span></div>
                       </div>
-                      <p className="text-xs text-[#6a7a88] mt-3">Whether a borrow succeeds or is denied for exceeding your encrypted limit is indistinguishable on-chain.</p>
+                      <p className="text-xs text-[#8F84A8] mt-3">Whether a borrow succeeds or is denied for exceeding your encrypted limit is indistinguishable on-chain.</p>
                     </div>
                   )}
 
@@ -486,13 +486,13 @@ function Dashboard() {
                   {actionTab === "repay" && (
                     <div>
                       <h3 className="text-xl font-semibold mb-2">Repay</h3>
-                      <p className="text-sm text-[#6a7a88] mb-6">Repay your encrypted debt in confidential cUSDT to unlock collateral.</p>
+                      <p className="text-sm text-[#8F84A8] mb-6">Repay your encrypted debt in confidential cUSDT to unlock collateral.</p>
                       <div className="flex gap-3 mb-4">
                         <div className="flex-1 relative">
-                          <input type="number" placeholder="0.00" value={repayAmount} onChange={(e) => setRepayAmount(e.target.value)} className="w-full h-14 bg-[#001520] border border-[#0a2535] rounded-xl px-4 pr-20 text-white placeholder-[#3a4a58] focus:outline-none focus:border-[#4ade80] transition-all" />
-                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6a7a88] text-sm font-medium">cUSDT</span>
+                          <input type="number" placeholder="0.00" value={repayAmount} onChange={(e) => setRepayAmount(e.target.value)} className="w-full h-14 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#4ade80] transition-all" />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">cUSDT</span>
                         </div>
-                        <div className="h-14 px-4 flex items-center text-xs text-[#6a7a88]">Operator + encrypt</div>
+                        <div className="h-14 px-4 flex items-center text-xs text-[#8F84A8]">Operator + encrypt</div>
                         <button onClick={() => safeTx(async () => {
                           if (!requireAddress(lending, "Lending")) return;
                           const amt = parseUnits(repayAmount || "0", DECIMALS.USDC);
@@ -501,7 +501,7 @@ function Dashboard() {
                           return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "repay", args: [usdc, handle, inputProof] });
                         }, "Repay")}
                           disabled={!repayAmount}
-                          className="h-14 px-8 bg-[#4ade80] hover:bg-[#22c55e] text-black font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#0a2535] disabled:text-[#3a4a58] disabled:hover:scale-100">Repay</button>
+                          className="h-14 px-8 bg-[#4ade80] hover:bg-[#22c55e] text-black font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">Repay</button>
                       </div>
                     </div>
                   )}
@@ -510,16 +510,16 @@ function Dashboard() {
                   {actionTab === "withdraw" && (
                     <div>
                       <h3 className="text-xl font-semibold mb-2">Withdraw Collateral</h3>
-                      <p className="text-sm text-[#6a7a88] mb-6">Withdraw your supplied encrypted collateral.</p>
+                      <p className="text-sm text-[#8F84A8] mb-6">Withdraw your supplied encrypted collateral.</p>
                       <div className="flex gap-2 mb-4">
                         {(["WETH", "WBTC"] as const).map((asset) => (
-                          <button key={asset} onClick={() => setWithdrawAsset(asset)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${withdrawAsset === asset ? "bg-[#FF4E00]/20 text-[#FF4E00] border border-[#FF4E00]" : "bg-[#001520] text-[#6a7a88] border border-[#0a2535] hover:border-[#FF4E00]/30"}`}>{asset}</button>
+                          <button key={asset} onClick={() => setWithdrawAsset(asset)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${withdrawAsset === asset ? "bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]" : "bg-[#0B0614] text-[#8F84A8] border border-[#2A1B40] hover:border-[#8B5CF6]/30"}`}>{asset}</button>
                         ))}
                       </div>
                       <div className="flex gap-3 mb-4">
                         <div className="flex-1 relative">
-                          <input type="number" placeholder="0.00" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} className="w-full h-14 bg-[#001520] border border-[#0a2535] rounded-xl px-4 pr-20 text-white placeholder-[#3a4a58] focus:outline-none focus:border-[#FF4E00] transition-all" />
-                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6a7a88] text-sm font-medium">{withdrawAsset}</span>
+                          <input type="number" placeholder="0.00" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} className="w-full h-14 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#8B5CF6] transition-all" />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">{withdrawAsset}</span>
                         </div>
                         <button onClick={() => safeTx(async () => {
                           if (!requireAddress(lending, "Lending")) return;
@@ -529,39 +529,39 @@ function Dashboard() {
                           return writeContractAsync({ address: lending, abi: lendingAbi, functionName: "withdraw", args: [token, handle, inputProof] });
                         }, "Withdraw")}
                         disabled={!withdrawAmount}
-                        className="h-14 px-8 bg-[#FF4E00] hover:bg-[#E64500] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#0a2535] disabled:text-[#3a4a58] disabled:hover:scale-100">Withdraw</button>
+                        className="h-14 px-8 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100">Withdraw</button>
                       </div>
-                      <div className="p-4 bg-[#001520]/50 rounded-xl space-y-2">
+                      <div className="p-4 bg-[#0B0614]/50 rounded-xl space-y-2">
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-[#6a7a88]">Deposited {withdrawAsset}</span>
+                          <span className="text-[#8F84A8]">Deposited {withdrawAsset}</span>
                           <span className="text-white font-semibold flex items-center gap-2">
                             {revealed[withdrawAsset === "WETH" ? "m-collWETH" : "m-collWBTC"] ?? MASK}
                             <button
                               onClick={() => withdrawAsset === "WETH"
                                 ? reveal("m-collWETH", collWETHHandle, lending, "WETH")
                                 : reveal("m-collWBTC", collWBTCHandle, lending, "WBTC")}
-                              className="text-xs text-[#FF4E00] hover:underline">Decrypt</button>
+                              className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                           </span>
                         </div>
-                        <div className="flex justify-between text-sm"><span className="text-[#6a7a88]">Confidentiality</span><span className="text-white font-semibold">euint64 / FHE</span></div>
+                        <div className="flex justify-between text-sm"><span className="text-[#8F84A8]">Confidentiality</span><span className="text-white font-semibold">euint64 / FHE</span></div>
                       </div>
                     </div>
                   )}
                 </div>
 
                 {/* Agent Configuration */}
-                <div className="mt-6 p-6 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm">
+                <div className="mt-6 p-6 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
                   <div className="flex items-center justify-between mb-5">
                     <h3 className="text-base font-semibold text-white">Agent Configuration</h3>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${agentConfig.enabled ? "bg-[#4ade80]/10 text-[#4ade80] border border-[#4ade80]/20" : "bg-[#3a4a58]/20 text-[#6a7a88] border border-[#3a4a58]/20"}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${agentConfig.enabled ? "bg-[#4ade80]/10 text-[#4ade80] border border-[#4ade80]/20" : "bg-[#4A4060]/20 text-[#8F84A8] border border-[#4A4060]/20"}`}>
                       {agentConfig.enabled ? "Active" : "Disabled"}
                     </span>
                   </div>
-                  <p className="text-xs text-[#6a7a88] mb-4">Set an encrypted daily credit limit (cUSDT). The limit ciphertext is decryptable only by the agent.</p>
+                  <p className="text-xs text-[#8F84A8] mb-4">Set an encrypted daily credit limit (cUSDT). The limit ciphertext is decryptable only by the agent.</p>
                   <div className="flex gap-3 mb-3">
                     <div className="flex-1 relative">
-                      <input type="number" placeholder="Daily limit" value={agentLimitInput} onChange={(e) => setAgentLimitInput(e.target.value)} className="w-full h-12 bg-[#001520] border border-[#0a2535] rounded-xl px-4 pr-20 text-white placeholder-[#3a4a58] focus:outline-none focus:border-[#FF4E00] transition-all" />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6a7a88] text-sm font-medium">cUSDT</span>
+                      <input type="number" placeholder="Daily limit" value={agentLimitInput} onChange={(e) => setAgentLimitInput(e.target.value)} className="w-full h-12 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#8B5CF6] transition-all" />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">cUSDT</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3">
@@ -590,7 +590,7 @@ function Dashboard() {
                     }, "Configure agent")} />
                   </div>
                   {agentConfig.enabled && (
-                    <div className="mt-4 p-4 bg-[#001520]/50 rounded-xl text-xs text-[#8a9aa8] space-y-2">
+                    <div className="mt-4 p-4 bg-[#0B0614]/50 rounded-xl text-xs text-[#A89CC0] space-y-2">
                       {agentConfig.autoRepay && <div className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-[#4ade80]"></div>Auto-repay enabled</div>}
                       {agentConfig.x402Enabled && <div className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-[#4ade80]"></div>x402 payments enabled</div>}
                       <div className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-[#4ade80]"></div>Daily limit encrypted on-chain (euint64)</div>
@@ -599,22 +599,22 @@ function Dashboard() {
                 </div>
 
                 {/* x402 Payment Demo */}
-                <div className="mt-6 p-6 bg-gradient-to-br from-[#051525]/80 to-[#0a1a2e]/80 border border-[#1a3545] rounded-2xl backdrop-blur-sm">
+                <div className="mt-6 p-6 bg-gradient-to-br from-[#160C24]/80 to-[#160C24]/80 border border-[#321F4A] rounded-2xl backdrop-blur-sm">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-[#FF4E00]/10 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center">
                       <span className="text-lg">⚡</span>
                     </div>
                     <div>
                       <h3 className="text-base font-semibold text-white">x402 Payment Demo</h3>
-                      <p className="text-xs text-[#6a7a88]">Confidential HTTP 402 machine-to-machine payments</p>
+                      <p className="text-xs text-[#8F84A8]">Confidential HTTP 402 machine-to-machine payments</p>
                     </div>
                   </div>
 
-                  <div className="p-4 bg-[#001520]/60 rounded-xl mb-4">
-                    <div className="text-xs text-[#6a7a88] mb-2">Simulated Service Request</div>
-                    <div className="font-mono text-sm text-white bg-[#000a10] p-3 rounded-lg">
-                      <div className="text-[#FF4E00]">GET /api/premium-data</div>
-                      <div className="text-[#6a7a88]">→ 402 Payment Required</div>
+                  <div className="p-4 bg-[#0B0614]/60 rounded-xl mb-4">
+                    <div className="text-xs text-[#8F84A8] mb-2">Simulated Service Request</div>
+                    <div className="font-mono text-sm text-white bg-[#050309] p-3 rounded-lg">
+                      <div className="text-[#8B5CF6]">GET /api/premium-data</div>
+                      <div className="text-[#8F84A8]">→ 402 Payment Required</div>
                       <div className="text-[#4ade80]">Cost: 1 cUSDT (encrypted)</div>
                     </div>
                   </div>
@@ -637,16 +637,16 @@ function Dashboard() {
                       });
                     }, "x402 Payment")}
                     disabled={!agentConfig.x402Enabled}
-                    className="w-full h-12 bg-[#FF4E00] hover:bg-[#E64500] text-white font-semibold rounded-xl transition-all hover:scale-[1.02] disabled:bg-[#0a2535] disabled:text-[#3a4a58] disabled:hover:scale-100 flex items-center justify-center gap-2"
+                    className="w-full h-12 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl transition-all hover:scale-[1.02] disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100 flex items-center justify-center gap-2"
                   >
                     <span>💸</span> Pay 1 cUSDT via x402
                   </button>
 
                   {!agentConfig.x402Enabled && (
-                    <p className="text-xs text-[#6a7a88] text-center mt-3">Enable x402 in Agent Configuration first</p>
+                    <p className="text-xs text-[#8F84A8] text-center mt-3">Enable x402 in Agent Configuration first</p>
                   )}
 
-                  <div className="mt-4 text-xs text-[#6a7a88]">
+                  <div className="mt-4 text-xs text-[#8F84A8]">
                     <div className="font-medium text-white mb-2">How it works:</div>
                     <ol className="space-y-1 list-decimal list-inside">
                       <li>Agent requests premium API endpoint</li>
@@ -660,58 +660,58 @@ function Dashboard() {
 
               {/* Sidebar */}
               <div className="space-y-4">
-                <div className="p-5 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm">
-                  <h3 className="text-sm font-medium text-[#8a9aa8] mb-4">Your Positions</h3>
+                <div className="p-5 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
+                  <h3 className="text-sm font-medium text-[#A89CC0] mb-4">Your Positions</h3>
                   <div className="mb-4">
-                    <div className="text-xs text-[#6a7a88] mb-2">Collateral (encrypted)</div>
+                    <div className="text-xs text-[#8F84A8] mb-2">Collateral (encrypted)</div>
                     <div className="text-sm text-white flex items-center justify-between gap-2">
                       <span>{revealed["m-collWETH"] ?? MASK} WETH</span>
-                      <button onClick={() => reveal("m-collWETH", collWETHHandle, lending, "WETH")} disabled={decrypting["m-collWETH"]} className="text-xs text-[#FF4E00] hover:underline">Decrypt</button>
+                      <button onClick={() => reveal("m-collWETH", collWETHHandle, lending, "WETH")} disabled={decrypting["m-collWETH"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                     </div>
                     <div className="text-sm text-white flex items-center justify-between gap-2 mt-1">
                       <span>{revealed["m-collWBTC"] ?? MASK} WBTC</span>
-                      <button onClick={() => reveal("m-collWBTC", collWBTCHandle, lending, "WBTC")} disabled={decrypting["m-collWBTC"]} className="text-xs text-[#FF4E00] hover:underline">Decrypt</button>
+                      <button onClick={() => reveal("m-collWBTC", collWBTCHandle, lending, "WBTC")} disabled={decrypting["m-collWBTC"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-[#6a7a88] mb-2">Borrowed (encrypted)</div>
+                    <div className="text-xs text-[#8F84A8] mb-2">Borrowed (encrypted)</div>
                     <div className="text-sm text-white flex items-center justify-between gap-2">
                       <span>{revealed["m-borrow"] ?? MASK} cUSDT</span>
-                      <button onClick={() => reveal("m-borrow", borrowUSDCHandle, lending, "USDC")} disabled={decrypting["m-borrow"]} className="text-xs text-[#FF4E00] hover:underline">Decrypt</button>
+                      <button onClick={() => reveal("m-borrow", borrowUSDCHandle, lending, "USDC")} disabled={decrypting["m-borrow"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                     </div>
                   </div>
                   <div className="mt-4">
-                    <div className="text-xs text-[#6a7a88] mb-2">Wallet cUSDT (encrypted)</div>
+                    <div className="text-xs text-[#8F84A8] mb-2">Wallet cUSDT (encrypted)</div>
                     <div className="text-sm text-white flex items-center justify-between gap-2">
                       <span>{revealed["m-walletUsdc"] ?? MASK} cUSDT</span>
-                      <button onClick={() => reveal("m-walletUsdc", usdcBalHandle, usdc, "USDC")} disabled={decrypting["m-walletUsdc"]} className="text-xs text-[#FF4E00] hover:underline">Decrypt</button>
+                      <button onClick={() => reveal("m-walletUsdc", usdcBalHandle, usdc, "USDC")} disabled={decrypting["m-walletUsdc"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-5 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm">
-                  <h3 className="text-sm font-medium text-[#8a9aa8] mb-4">Reputation</h3>
+                <div className="p-5 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
+                  <h3 className="text-sm font-medium text-[#A89CC0] mb-4">Reputation</h3>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between items-center"><span className="text-[#6a7a88]">Score (encrypted)</span>
+                    <div className="flex justify-between items-center"><span className="text-[#8F84A8]">Score (encrypted)</span>
                       <span className="flex items-center gap-2">{revealed["m-score"] ?? MASK}
-                        <button onClick={() => reveal("m-score", scoreHandle, reputation, "SCORE")} disabled={decrypting["m-score"]} className="text-xs text-[#FF4E00] hover:underline">Decrypt</button>
+                        <button onClick={() => reveal("m-score", scoreHandle, reputation, "SCORE")} disabled={decrypting["m-score"]} className="text-xs text-[#8B5CF6] hover:underline">Decrypt</button>
                       </span>
                     </div>
-                    <div className="flex justify-between"><span className="text-[#6a7a88]">Decryption</span><span>EIP-712</span></div>
-                    <div className="flex justify-between"><span className="text-[#6a7a88]">Visibility</span><span className="text-[#FF4E00]">Agent only</span></div>
+                    <div className="flex justify-between"><span className="text-[#8F84A8]">Decryption</span><span>EIP-712</span></div>
+                    <div className="flex justify-between"><span className="text-[#8F84A8]">Visibility</span><span className="text-[#8B5CF6]">Agent only</span></div>
                   </div>
                 </div>
 
-                <div className="p-5 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm">
+                <div className="p-5 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#FF4E00]/10 flex items-center justify-center">
-                      <svg className="w-4 h-4 text-[#FF4E00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <div className="w-8 h-8 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-[#8B5CF6]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                       </svg>
                     </div>
                     <h3 className="text-sm font-medium text-white">Composable Privacy</h3>
                   </div>
-                  <p className="text-xs text-[#6a7a88] leading-relaxed">Debt, collateral, credit limit, and reputation are encrypted on-chain via Fully Homomorphic Encryption. Only you can decrypt your own values.</p>
+                  <p className="text-xs text-[#8F84A8] leading-relaxed">Debt, collateral, credit limit, and reputation are encrypted on-chain via Fully Homomorphic Encryption. Only you can decrypt your own values.</p>
                 </div>
               </div>
             </div>
@@ -731,15 +731,15 @@ function Dashboard() {
               {/* Main LP Panel */}
               <div className="lg:col-span-2">
                 {/* LP Tabs */}
-                <div className="flex gap-1 p-1 bg-[#051525] border border-[#0a2535] rounded-xl mb-6 w-fit">
+                <div className="flex gap-1 p-1 bg-[#160C24] border border-[#2A1B40] rounded-xl mb-6 w-fit">
                   {(["deposit", "withdraw"] as const).map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setLpTab(tab)}
                       className={`px-6 py-2.5 text-sm font-medium rounded-lg transition-all ${
                         lpTab === tab
-                          ? "bg-[#FF4E00] text-white"
-                          : "text-[#6a7a88] hover:text-white hover:bg-[#0a2535]"
+                          ? "bg-[#8B5CF6] text-white"
+                          : "text-[#8F84A8] hover:text-white hover:bg-[#2A1B40]"
                       }`}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -747,11 +747,11 @@ function Dashboard() {
                   ))}
                 </div>
 
-                <div className="p-6 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm">
+                <div className="p-6 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
                   <h3 className="text-xl font-semibold mb-2">
                     {lpTab === "deposit" ? "Provide Liquidity" : "Withdraw Liquidity"}
                   </h3>
-                  <p className="text-sm text-[#6a7a88] mb-6">
+                  <p className="text-sm text-[#8F84A8] mb-6">
                     {lpTab === "deposit"
                       ? "Provide confidential cUSDT liquidity. Your deposit amount is encrypted client-side."
                       : "Withdraw your encrypted LP shares."}
@@ -772,9 +772,9 @@ function Dashboard() {
                         placeholder="0.00"
                         value={lpAmount}
                         onChange={(e) => setLpAmount(e.target.value)}
-                        className="w-full h-14 bg-[#001520] border border-[#0a2535] rounded-xl px-4 pr-20 text-white placeholder-[#3a4a58] focus:outline-none focus:border-[#4ade80] transition-all"
+                        className="w-full h-14 bg-[#0B0614] border border-[#2A1B40] rounded-xl px-4 pr-20 text-white placeholder-[#4A4060] focus:outline-none focus:border-[#4ade80] transition-all"
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6a7a88] text-sm font-medium">
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8F84A8] text-sm font-medium">
                         cUSDT
                       </span>
                     </div>
@@ -795,24 +795,24 @@ function Dashboard() {
                         setLpAmount("");
                       }, lpTab === "deposit" ? "LP deposit" : "LP withdraw")}
                       disabled={!lpAmount}
-                      className={`h-14 px-8 font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#0a2535] disabled:text-[#3a4a58] disabled:hover:scale-100 ${
-                        lpTab === "deposit" ? "bg-[#4ade80] hover:bg-[#22c55e] text-black" : "bg-[#FF4E00] hover:bg-[#E64500] text-white"
+                      className={`h-14 px-8 font-semibold rounded-xl transition-all hover:scale-105 disabled:bg-[#2A1B40] disabled:text-[#4A4060] disabled:hover:scale-100 ${
+                        lpTab === "deposit" ? "bg-[#4ade80] hover:bg-[#22c55e] text-black" : "bg-[#8B5CF6] hover:bg-[#7C3AED] text-white"
                       }`}
                     >
                       {lpTab === "deposit" ? "Deposit" : "Withdraw"}
                     </button>
                   </div>
 
-                  <div className="mt-6 p-4 bg-[#001520]/50 rounded-xl space-y-2">
+                  <div className="mt-6 p-4 bg-[#0B0614]/50 rounded-xl space-y-2">
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-[#6a7a88]">Your LP shares (encrypted)</span>
+                      <span className="text-[#8F84A8]">Your LP shares (encrypted)</span>
                       <span className="text-white font-semibold flex items-center gap-2">
                         {revealed["m-lpShares"] ?? MASK}
                         <button onClick={() => reveal("m-lpShares", lpSharesHandle, lp, "USDC")} disabled={decrypting["m-lpShares"]} className="text-xs text-[#4ade80] hover:underline">Decrypt</button>
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#6a7a88]">Settlement token</span>
+                      <span className="text-[#8F84A8]">Settlement token</span>
                       <span className="text-[#4ade80] font-semibold">cUSDT (ERC-7984)</span>
                     </div>
                   </div>
@@ -821,8 +821,8 @@ function Dashboard() {
 
               {/* LP Sidebar */}
               <div className="space-y-4">
-                <div className="p-5 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm">
-                  <h3 className="text-sm font-medium text-[#8a9aa8] mb-4">Your LP Positions</h3>
+                <div className="p-5 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
+                  <h3 className="text-sm font-medium text-[#A89CC0] mb-4">Your LP Positions</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center py-2">
                       <span className="text-white">cUSDT</span>
@@ -834,8 +834,8 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <div className="p-5 bg-[#051525]/80 border border-[#0a2535] rounded-2xl backdrop-blur-sm">
-                  <h3 className="text-sm font-medium text-[#8a9aa8] mb-4">Pool Statistics</h3>
+                <div className="p-5 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
+                  <h3 className="text-sm font-medium text-[#A89CC0] mb-4">Pool Statistics</h3>
                   <div className="space-y-3">
                     <InfoRow label="Settlement Token" value="cUSDT (ERC-7984)" />
                     <InfoRow label="Network" value={SEPOLIA_CONFIG.name} />
@@ -843,7 +843,7 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <div className="p-5 bg-gradient-to-br from-[#0a2535]/80 to-[#051525]/80 border border-[#4ade80]/10 rounded-2xl">
+                <div className="p-5 bg-gradient-to-br from-[#2A1B40]/80 to-[#160C24]/80 border border-[#4ade80]/10 rounded-2xl">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-8 h-8 rounded-lg bg-[#4ade80]/10 flex items-center justify-center">
                       <svg className="w-4 h-4 text-[#4ade80]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -852,7 +852,7 @@ function Dashboard() {
                     </div>
                     <h3 className="text-sm font-medium text-white">Agent-Native Protocol</h3>
                   </div>
-                  <p className="text-xs text-[#6a7a88] leading-relaxed mb-2">
+                  <p className="text-xs text-[#8F84A8] leading-relaxed mb-2">
                     AI agents are first-class citizens: they can borrow autonomously AND provide liquidity — all with encrypted amounts.
                   </p>
                   <div className="text-xs text-[#4ade80]/80 space-y-1">
@@ -866,9 +866,9 @@ function Dashboard() {
         )}
 
         <div className="mt-10 flex items-center justify-between">
-          <Link href="/" className="text-sm text-[#8a9aa8] hover:text-white">← Back</Link>
+          <Link href="/" className="text-sm text-[#A89CC0] hover:text-white">← Back</Link>
           {lastTx && (
-            <a href={`${SEPOLIA_CONFIG.explorer}/tx/${lastTx}`} target="_blank" rel="noreferrer" className="text-sm text-[#8a9aa8] hover:text-[#FF4E00]">
+            <a href={`${SEPOLIA_CONFIG.explorer}/tx/${lastTx}`} target="_blank" rel="noreferrer" className="text-sm text-[#A89CC0] hover:text-[#8B5CF6]">
               View last tx on Etherscan ↗
             </a>
           )}
@@ -883,21 +883,21 @@ function Dashboard() {
 function Nav({ connected, onConnect, address }: { connected: boolean; onConnect: () => void; address?: string }) {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#001520]/80 backdrop-blur-xl border-b border-[#0a2535]">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0B0614]/80 backdrop-blur-xl border-b border-[#2A1B40]">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img src="/obscura-logo.svg" alt="Obscura" className="h-7 w-auto" />
         </div>
         <div className="flex items-center gap-3">
-          <a href="/faucet" className="text-sm text-[#8a9aa8] hover:text-white">Faucet</a>
+          <a href="/faucet" className="text-sm text-[#A89CC0] hover:text-white">Faucet</a>
           {!connected ? (
-            <button className="h-9 px-4 bg-[#FF4E00] hover:bg-[#E64500] text-white rounded-xl font-semibold" onClick={onConnect}>Connect MetaMask</button>
+            <button className="h-9 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={onConnect}>Connect MetaMask</button>
           ) : (
             <div className="relative">
-            <button className="h-9 px-4 bg-[#FF4E00] hover:bg-[#E64500] text-white rounded-xl font-semibold" onClick={() => setUserMenuOpen((v) => !v)}>{address?.slice(0, 6)}…{address?.slice(-4)}</button>
+            <button className="h-9 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => setUserMenuOpen((v) => !v)}>{address?.slice(0, 6)}…{address?.slice(-4)}</button>
             {userMenuOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-[#051525] border border-[#0a2535] rounded-xl shadow-xl z-50">
-                <button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-[#0a2535] rounded-xl" onClick={onConnect}>Disconnect</button>
+              <div className="absolute right-0 mt-2 w-40 bg-[#160C24] border border-[#2A1B40] rounded-xl shadow-xl z-50">
+                <button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-[#2A1B40] rounded-xl" onClick={onConnect}>Disconnect</button>
               </div>
             )}
           </div>
@@ -910,10 +910,10 @@ function Nav({ connected, onConnect, address }: { connected: boolean; onConnect:
 
 function MetricCard({ label, value, subtitle, color }: { label: string; value: string; subtitle?: string; color?: string }) {
   return (
-    <div className="p-4 bg-[#051525]/80 border border-[#0a2535] rounded-2xl">
-      <div className="text-xs text-[#6a7a88] uppercase tracking-wider">{label}</div>
+    <div className="p-4 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
+      <div className="text-xs text-[#8F84A8] uppercase tracking-wider">{label}</div>
       <div className="text-xl font-bold" style={{ color: color || "#fff" }}>{value}</div>
-      {subtitle && <div className="text-xs text-[#6a7a88] mt-1">{subtitle}</div>}
+      {subtitle && <div className="text-xs text-[#8F84A8] mt-1">{subtitle}</div>}
     </div>
   );
 }
@@ -933,15 +933,15 @@ function DecryptCard({
   const value = revealed[slot];
   const busy = decrypting[slot];
   return (
-    <div className="p-4 bg-[#051525]/80 border border-[#0a2535] rounded-2xl">
-      <div className="text-xs text-[#6a7a88] uppercase tracking-wider">{label}</div>
+    <div className="p-4 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl">
+      <div className="text-xs text-[#8F84A8] uppercase tracking-wider">{label}</div>
       <div className="text-xl font-bold truncate" style={{ color: color || "#fff" }}>
         {value !== undefined ? `${value}${suffix ? ` ${suffix}` : ""}` : "•••••"}
       </div>
       <button
         onClick={onDecrypt}
         disabled={busy}
-        className="mt-1 text-xs text-[#FF4E00] hover:underline disabled:opacity-50"
+        className="mt-1 text-xs text-[#8B5CF6] hover:underline disabled:opacity-50"
       >
         {busy ? "Decrypting…" : value !== undefined ? "Re-decrypt" : "Decrypt"}
       </button>
@@ -952,10 +952,10 @@ function DecryptCard({
 function AgentButton({ title, description, active, highlighted, onClick }: { title: string; description: string; active?: boolean; highlighted?: boolean; onClick?: () => void }) {
   return (
     <button onClick={onClick} className={`p-4 rounded-xl text-sm font-medium border transition-all ${
-      active ? "bg-[#FF4E00]/20 text-[#FF4E00] border-[#FF4E00]" : highlighted ? "bg-[#001520] border-[#0a2535] hover:border-[#FF4E00]/40" : "bg-[#001520] border-[#0a2535] hover:border-[#1a3545]"
+      active ? "bg-[#8B5CF6]/20 text-[#8B5CF6] border-[#8B5CF6]" : highlighted ? "bg-[#0B0614] border-[#2A1B40] hover:border-[#8B5CF6]/40" : "bg-[#0B0614] border-[#2A1B40] hover:border-[#321F4A]"
     }`}>
       <div>{title}</div>
-      <div className="text-xs text-[#6a7a88] mt-1">{description}</div>
+      <div className="text-xs text-[#8F84A8] mt-1">{description}</div>
     </button>
   );
 }
@@ -963,7 +963,7 @@ function AgentButton({ title, description, active, highlighted, onClick }: { tit
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between text-sm">
-      <span className="text-[#6a7a88]">{label}</span>
+      <span className="text-[#8F84A8]">{label}</span>
       <span className="text-white">{value}</span>
     </div>
   );

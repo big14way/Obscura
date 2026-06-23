@@ -82,7 +82,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} bg-[#001520] text-white antialiased`}>
+      <body className={`${inter.className} bg-[#0B0614] text-white antialiased`}>
         <WalletProvider>{children}</WalletProvider>
       </body>
     </html>
