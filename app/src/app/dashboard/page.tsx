@@ -110,6 +110,9 @@ const lendingAbi = [
   { name: "agentBorrowed", type: "function", stateMutability: "view", inputs: [
     { name: "agent", type: "address" },
   ], outputs: [{ name: "", type: "bytes32" }] },
+  { name: "agentFlags", type: "function", stateMutability: "view", inputs: [
+    { name: "owner", type: "address" },
+  ], outputs: [{ name: "autoRepay", type: "bool" }, { name: "x402", type: "bool" }, { name: "configured", type: "bool" }] },
 ] as const;
 
 // ObscuraLP — encrypted deposit/withdraw, encrypted share balance.
@@ -183,6 +186,8 @@ function Dashboard() {
   const { data: scoreHandle, refetch: refetchScore } = useReadContract({ address: reputation, abi: reputationAbi, functionName: "scoreOf", args: [address ?? zeroAddr] });
   const { data: lpSharesHandle, refetch: refetchLpShares } = useReadContract({ address: lp, abi: lpAbi, functionName: "sharesOf", args: [address ?? zeroAddr] });
   const { data: usdcBalHandle, refetch: refetchUsdcBal } = useReadContract({ address: usdc, abi: tokenAbi, functionName: "confidentialBalanceOf", args: [address ?? zeroAddr] });
+  // Plaintext agent flags (autoRepay, x402, configured) — source of truth for the UI gates.
+  const { data: agentFlagsData, refetch: refetchFlags } = useReadContract({ address: lending, abi: lendingAbi, functionName: "agentFlags", args: [address ?? zeroAddr] });
 
   const [mainTab, setMainTab] = useState<"borrow" | "lp">("borrow");
   const [actionTab, setActionTab] = useState<"supply" | "borrow" | "repay" | "withdraw">("supply");
@@ -228,6 +233,14 @@ function Dashboard() {
     if (mounted && isConnected && chainId !== sepolia.id) switchChain?.({ chainId: sepolia.id });
   }, [mounted, isConnected, chainId, switchChain]);
 
+  // Drive the agent UI from the on-chain flags (source of truth), so the x402 gate reflects reality.
+  useEffect(() => {
+    if (Array.isArray(agentFlagsData)) {
+      const [autoRepay, x402, configured] = agentFlagsData as unknown as [boolean, boolean, boolean];
+      setAgentConfig({ enabled: configured, autoRepay, x402Enabled: x402 });
+    }
+  }, [agentFlagsData]);
+
   const refreshAll = () => {
     refetchCollWBTC();
     refetchCollWETH();
@@ -237,6 +250,7 @@ function Dashboard() {
     refetchScore();
     refetchLpShares();
     refetchUsdcBal();
+    refetchFlags();
     // Reading encrypted handles changed → previously-revealed values are stale.
     setRevealed({});
   };
@@ -627,23 +641,26 @@ function Dashboard() {
                       await ensurePosition();
                       const amt = parseUnits(agentLimitInput || "0", DECIMALS.USDC);
                       const { handle, inputProof } = await encrypt(lending, amt);
-                      await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, true, true] });
-                      setAgentConfig({ enabled: true, autoRepay: true, x402Enabled: true });
+                      const hash = await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, true, true] });
+                      setAgentConfig({ enabled: true, autoRepay: true, x402Enabled: true }); // optimistic; confirmed by on-chain agentFlags after mine
+                      return hash;
                     }, "Configure agent")} />
                     <AgentButton title="Manual" description="No x402" active={agentConfig.enabled && !agentConfig.x402Enabled} onClick={() => safeTx(async () => {
                       if (!requireAddress(lending, "Lending")) return;
                       await ensurePosition();
                       const amt = parseUnits(agentLimitInput || "0", DECIMALS.USDC);
                       const { handle, inputProof } = await encrypt(lending, amt);
-                      await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
+                      const hash = await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
                       setAgentConfig({ enabled: true, autoRepay: false, x402Enabled: false });
+                      return hash;
                     }, "Configure agent")} />
                     <AgentButton title="Disable" description="Zero limit" active={!agentConfig.enabled} onClick={() => safeTx(async () => {
                       if (!requireAddress(lending, "Lending")) return;
                       await ensurePosition();
                       const { handle, inputProof } = await encrypt(lending, BigInt(0));
-                      await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
+                      const hash = await sendTx({ address: lending, abi: lendingAbi, functionName: "configureAgent", args: [handle, inputProof, false, false] });
                       setAgentConfig({ enabled: false, autoRepay: false, x402Enabled: false });
+                      return hash;
                     }, "Configure agent")} />
                   </div>
                   {agentConfig.enabled && (
