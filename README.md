@@ -193,6 +193,20 @@ await writeContract({
 
 ---
 
+## Scope & honest engineering
+
+This is a **testnet demo built for the Builder Track**, not an audited mainnet protocol. We'd rather state the trade‑offs than hide them:
+
+- **Demo tokens** — collateral/settlement use our own `ConfidentialMockToken` (ERC‑7984) with an open faucet, not the official Sepolia cTokenMocks. The frontend can point at either (see `evmContracts.ts`).
+- **Risk model** — a single protocol‑wide `globalMaxLtvBps` is used for the aggregate health check (a production version would weight LTV per collateral). Interest accrual is omitted.
+- **LP vault** — a 1:1 share model (FHE has no `euint/euint` division, so a private per‑share price can't be computed purely homomorphically with private aggregates; the production path is the `ERC7984ERC20Wrapper` `rate()` model).
+- **Flash loans** — `ObscuraFlash` keeps the amount **plaintext on purpose**: flash‑loan correctness needs an atomic balance invariant that can't be evaluated on an `ebool` (no async decrypt mid‑tx). It's the composable, non‑confidential leg — the asset is ERC‑7984 but the amount is public. Not part of the confidential demo.
+- **Governance** — single admin keys, no timelock. Fine for a testnet demo; a mainnet deploy needs two‑step ownership + a reorg‑safe reveal timelock for any public decryption.
+
+What **is** real: the confidential lending/credit core, encrypted x402 receipts, encrypted reputation, and **GAD** (proven by tests + live txs) all run on verified Sepolia contracts with end‑to‑end encryption.
+
+---
+
 ## Agent Integration
 
 Confidential writes follow the same two-step pattern: **encrypt the amount**, then **submit handle + proof**. Token transfers use `setOperator(spender, until)` instead of ERC-20 `approve`.

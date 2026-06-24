@@ -136,4 +136,38 @@ describe("Obscura Protocol (confidential)", function () {
     );
     expect(after).to.be.lessThan(before);
   });
+
+  it("GAD cranks an over-leveraged position and seizes encrypted collateral", async () => {
+    const { deployer, agent, cUSDT, cWETH, core, lending, gad } = await deploy();
+    const lendingAddr = await lending.getAddress();
+    const wethAddr = await cWETH.getAddress();
+    const usdtAddr = await cUSDT.getAddress();
+    const until = Math.floor(Date.now() / 1000) + 3600;
+
+    // supply 5 cWETH (~$13k) and borrow 9000 cUSDT (healthy, ~69% LTV)
+    await (await cWETH.connect(agent).setOperator(lendingAddr, until)).wait();
+    const dep = await enc(lendingAddr, agent.address, 5_000_000n);
+    await (await lending.connect(agent).deposit(wethAddr, dep.handles[0], dep.inputProof)).wait();
+    const bor = await enc(lendingAddr, agent.address, 9000_000000n);
+    await (await lending.connect(agent).borrow(usdtAddr, bor.handles[0], bor.inputProof)).wait();
+
+    const collBefore = await fhevm.userDecryptEuint(
+      FhevmType.euint64, await lending.totalCollateralOf(agent.address, wethAddr), lendingAddr, agent
+    );
+    expect(collBefore).to.equal(5_000_000n);
+
+    // crash the cWETH price → position is now under-collateralized (~120% LTV → GAD-eligible)
+    await (await core.connect(deployer).updatePrice(wethAddr, 1500_000000n)).wait();
+
+    // enable GAD, wait out the cooldown, and crank (permissionless — anyone can call)
+    await (await gad.connect(agent).configureGad(true, 0)).wait();
+    await ethers.provider.send("evm_increaseTime", [3601]);
+    await ethers.provider.send("evm_mine", []);
+    await (await gad.connect(deployer).crank(agent.address)).wait();
+
+    const collAfter = await fhevm.userDecryptEuint(
+      FhevmType.euint64, await lending.totalCollateralOf(agent.address, wethAddr), lendingAddr, agent
+    );
+    expect(collAfter).to.be.lessThan(collBefore); // a slice was seized — leak-free, no plaintext revealed
+  });
 });

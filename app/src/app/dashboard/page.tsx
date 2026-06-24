@@ -151,6 +151,18 @@ const x402Abi = [
   ], outputs: [{ name: "", type: "bytes32" }] },
 ] as const;
 
+// ObscuraGAD — gradual auto-deleveraging (permissionless crank, leak-free).
+const gadAbi = [
+  { name: "configureGad", type: "function", stateMutability: "nonpayable", inputs: [
+    { name: "enabled", type: "bool" }, { name: "customThresholdBps", type: "uint16" },
+  ], outputs: [] },
+  { name: "crank", type: "function", stateMutability: "nonpayable", inputs: [{ name: "user", type: "address" }], outputs: [] },
+  { name: "canCrank", type: "function", stateMutability: "view", inputs: [{ name: "user", type: "address" }],
+    outputs: [{ name: "ready", type: "bool" }, { name: "reason", type: "string" }] },
+  { name: "getGadStats", type: "function", stateMutability: "view", inputs: [{ name: "user", type: "address" }],
+    outputs: [{ name: "enabled", type: "bool" }, { name: "lastCrank", type: "uint256" }, { name: "totalLiquidatedUsd6", type: "bytes32" }] },
+] as const;
+
 function Dashboard() {
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
@@ -174,6 +186,7 @@ function Dashboard() {
   const weth = CONTRACTS.weth as `0x${string}`;
   const reputation = CONTRACTS.reputation as `0x${string}`;
   const x402 = CONTRACTS.x402 as `0x${string}`;
+  const gad = CONTRACTS.gad as `0x${string}`;
 
   const zeroAddr = "0x0000000000000000000000000000000000000000" as const;
 
@@ -188,6 +201,10 @@ function Dashboard() {
   const { data: usdcBalHandle, refetch: refetchUsdcBal } = useReadContract({ address: usdc, abi: tokenAbi, functionName: "confidentialBalanceOf", args: [address ?? zeroAddr] });
   // Plaintext agent flags (autoRepay, x402, configured) — source of truth for the UI gates.
   const { data: agentFlagsData, refetch: refetchFlags } = useReadContract({ address: lending, abi: lendingAbi, functionName: "agentFlags", args: [address ?? zeroAddr] });
+  const { data: gadStats, refetch: refetchGad } = useReadContract({ address: gad, abi: gadAbi, functionName: "getGadStats", args: [address ?? zeroAddr] });
+  const { data: canCrankData, refetch: refetchCanCrank } = useReadContract({ address: gad, abi: gadAbi, functionName: "canCrank", args: [address ?? zeroAddr] });
+  const gadEnabled = Array.isArray(gadStats) ? Boolean(gadStats[0]) : false;
+  const canCrankReason = Array.isArray(canCrankData) ? String(canCrankData[1]) : "";
 
   const [mainTab, setMainTab] = useState<"borrow" | "lp">("borrow");
   const [actionTab, setActionTab] = useState<"supply" | "borrow" | "repay" | "withdraw">("supply");
@@ -251,6 +268,8 @@ function Dashboard() {
     refetchLpShares();
     refetchUsdcBal();
     refetchFlags();
+    refetchGad();
+    refetchCanCrank();
     // Reading encrypted handles changed → previously-revealed values are stale.
     setRevealed({});
   };
@@ -747,6 +766,45 @@ function Dashboard() {
                       <li>Server verifies the on-chain receipt, delivers data</li>
                     </ol>
                   </div>
+                </div>
+
+                {/* Gradual Auto-Deleveraging */}
+                <div className="mt-6 p-6 bg-[#160C24]/80 border border-[#2A1B40] rounded-2xl backdrop-blur-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center"><span className="text-lg">🛡️</span></div>
+                      <div>
+                        <h3 className="text-base font-semibold text-white">Gradual Auto-Deleveraging</h3>
+                        <p className="text-xs text-[#8F84A8]">No liquidations — positions unwind gradually on encrypted state</p>
+                      </div>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${gadEnabled ? "bg-[#4ade80]/10 text-[#4ade80] border border-[#4ade80]/20" : "bg-[#4A4060]/20 text-[#8F84A8] border border-[#4A4060]/20"}`}>{gadEnabled ? "Enabled" : "Disabled"}</span>
+                  </div>
+                  <div className="p-3 bg-[#0B0614]/60 rounded-xl text-xs text-[#A89CC0] mb-4">
+                    The crank is <b className="text-white">permissionless</b> and <b className="text-white">leak-free</b>: anyone can call it, but it seizes only an encrypted slice when the (encrypted) LTV is over threshold — and reveals nothing.
+                    {canCrankReason && <div className="mt-2 text-[#8F84A8]">Status: {canCrankReason}</div>}
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => safeTx(async () => {
+                        if (!requireAddress(gad, "GAD")) return;
+                        return await sendTx({ address: gad, abi: gadAbi, functionName: "configureGad", args: [true, 0] });
+                      }, "Enable GAD")}
+                      disabled={gadEnabled}
+                      className="h-11 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-sm font-semibold rounded-xl transition-all disabled:bg-[#2A1B40] disabled:text-[#4A4060]">
+                      {gadEnabled ? "GAD Enabled ✓" : "Enable GAD"}
+                    </button>
+                    <button
+                      onClick={() => safeTx(async () => {
+                        if (!address) return;
+                        return await sendTx({ address: gad, abi: gadAbi, functionName: "crank", args: [address] });
+                      }, "GAD crank")}
+                      disabled={!gadEnabled}
+                      className="h-11 bg-[#2A1B40] hover:bg-[#321F4A] border border-[#8B5CF6]/30 text-white text-sm font-semibold rounded-xl transition-all disabled:opacity-50">
+                      Crank position
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-[#6E6486] mt-3">Cranking a healthy position is a no-op (seizes 0) — indistinguishable on-chain from a real deleverage.</p>
                 </div>
               </div>
 
