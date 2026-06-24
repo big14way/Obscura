@@ -5,6 +5,15 @@
 // below match 0.4.x. (0.5.0-rc adds a mandatory `extraData` arg via getExtraData().)
 
 import type { WalletClient } from 'viem';
+import { bytesToHex } from 'viem';
+
+// The relayer SDK returns handles/inputProof as Uint8Array; viem's ABI encoder needs hex
+// strings (passing a Uint8Array triggers "hex_.replace is not a function"). Normalize both.
+function toHex(v: unknown): `0x${string}` {
+  if (v instanceof Uint8Array) return bytesToHex(v);
+  if (typeof v === 'string') return (v.startsWith('0x') ? v : `0x${v}`) as `0x${string}`;
+  return bytesToHex(Uint8Array.from(v as ArrayLike<number>));
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let instancePromise: Promise<any> | null = null;
@@ -68,7 +77,7 @@ export async function encryptAmount(
   const buf = instance.createEncryptedInput(contractAddress, userAddress);
   buf.add64(amount);
   const enc = await buf.encrypt();
-  return { handle: enc.handles[0], inputProof: enc.inputProof };
+  return { handle: toHex(enc.handles[0]), inputProof: toHex(enc.inputProof) };
 }
 
 /** EIP-712 user-decryption: reveal encrypted handles the caller is allowed to decrypt. */
