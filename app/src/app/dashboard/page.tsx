@@ -143,6 +143,9 @@ const x402Abi = [
     { name: "enc", type: "bytes32" },
     { name: "inputProof", type: "bytes" },
   ], outputs: [] },
+  { name: "amountOf", type: "function", stateMutability: "view", inputs: [
+    { name: "paymentId", type: "bytes32" },
+  ], outputs: [{ name: "", type: "bytes32" }] },
 ] as const;
 
 function Dashboard() {
@@ -208,6 +211,11 @@ function Dashboard() {
     x402Enabled: false,
   });
   const [positionInitialized, setPositionInitialized] = useState(false);
+
+  // Last x402 receipt: paymentId of the most recent payment + the decrypted amount (payer-only).
+  const [x402PaymentId, setX402PaymentId] = useState<`0x${string}` | null>(null);
+  const [x402Amount, setX402Amount] = useState<string | null>(null);
+  const [x402Decrypting, setX402Decrypting] = useState(false);
 
   // Avoid SSR/client hydration mismatch: wagmi reconnects the wallet only on the client, so
   // gate wallet-dependent UI until after mount (server + first client render both show the
@@ -317,6 +325,23 @@ function Dashboard() {
       showToast(`Decryption failed: ${(err?.shortMessage || err?.message || String(e)).slice(0, 140)}`, "error");
     } finally {
       setDecrypting((p) => ({ ...p, [slot]: false }));
+    }
+  };
+
+  // Decrypt the most recent x402 receipt amount (only the payer can — EIP-712 user decryption).
+  const decryptReceipt = async () => {
+    if (!x402PaymentId || !publicClient) return;
+    setX402Decrypting(true);
+    try {
+      const handle = await publicClient.readContract({ address: x402, abi: x402Abi, functionName: "amountOf", args: [x402PaymentId] }) as string;
+      const value = await decrypt(handle, x402);
+      setX402Amount(Number(formatUnits(value, DECIMALS.USDC)).toLocaleString(undefined, { maximumFractionDigits: 6 }));
+    } catch (e: unknown) {
+      const err = e as { shortMessage?: string; message?: string };
+      console.error("receipt decrypt failed:", e);
+      showToast(`Receipt decrypt failed: ${(err?.shortMessage || err?.message || String(e)).slice(0, 140)}`, "error");
+    } finally {
+      setX402Decrypting(false);
     }
   };
 
@@ -654,8 +679,10 @@ function Dashboard() {
                   <button
                     onClick={() => safeTx(async () => {
                       if (!requireAddress(x402, "X402")) return;
-                      // Generate payment ID
+                      // Generate payment ID + remember it so the payer can decrypt the receipt after.
                       const paymentId = `0x${Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b => b.toString(16).padStart(2, '0')).join('')}` as `0x${string}`;
+                      setX402PaymentId(paymentId);
+                      setX402Amount(null);
                       const serviceProvider = "0x000000000000000000000000000000000000dEaD" as `0x${string}`; // Demo recipient
                       const amt = parseUnits("1", DECIMALS.USDC); // 1 cUSDT
                       // Encrypt the payment amount against the X402 contract (which reads it)
@@ -676,6 +703,22 @@ function Dashboard() {
 
                   {!agentConfig.x402Enabled && (
                     <p className="text-xs text-[#8F84A8] text-center mt-3">Enable x402 in Agent Configuration first</p>
+                  )}
+
+                  {x402PaymentId && (
+                    <div className="mt-4 p-4 bg-[#0B0614]/60 rounded-xl">
+                      <div className="text-xs text-[#8F84A8] mb-2">Your encrypted receipt</div>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-xs text-[#A89CC0]">{x402PaymentId.slice(0, 10)}…{x402PaymentId.slice(-6)}</span>
+                        <span className="text-sm text-white flex items-center gap-2">
+                          {x402Amount ? `${x402Amount} cUSDT` : MASK}
+                          <button onClick={decryptReceipt} disabled={x402Decrypting} className="text-xs text-[#8B5CF6] hover:underline">
+                            {x402Decrypting ? "Decrypting…" : "Decrypt"}
+                          </button>
+                        </span>
+                      </div>
+                      <div className="text-[10px] text-[#6E6486] mt-2">On-chain the amount is a ciphertext handle — only you (payer) and the recipient can decrypt it.</div>
+                    </div>
                   )}
 
                   <div className="mt-4 text-xs text-[#8F84A8]">
