@@ -311,8 +311,10 @@ function Dashboard() {
         ? value.toString()
         : Number(formatUnits(value, decimalsFor(asset))).toLocaleString(undefined, { maximumFractionDigits: 6 });
       setRevealed((p) => ({ ...p, [slot]: text }));
-    } catch {
-      showToast("Decryption failed", "error");
+    } catch (e: unknown) {
+      const err = e as { shortMessage?: string; message?: string };
+      console.error("decrypt failed:", e);
+      showToast(`Decryption failed: ${(err?.shortMessage || err?.message || String(e)).slice(0, 140)}`, "error");
     } finally {
       setDecrypting((p) => ({ ...p, [slot]: false }));
     }
@@ -395,10 +397,10 @@ function Dashboard() {
           <>
             {/* Overview Cards — encrypted on-chain, masked until the agent decrypts. */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-              <DecryptCard label="Collateral WETH" slot="m-collWETH" revealed={revealed} decrypting={decrypting}
-                onDecrypt={() => reveal("m-collWETH", collWETHHandle, lending, "WETH")} suffix="WETH" />
-              <DecryptCard label="Collateral WBTC" slot="m-collWBTC" revealed={revealed} decrypting={decrypting}
-                onDecrypt={() => reveal("m-collWBTC", collWBTCHandle, lending, "WBTC")} suffix="WBTC" />
+              <DecryptCard label="Collateral cWETH" slot="m-collWETH" revealed={revealed} decrypting={decrypting}
+                onDecrypt={() => reveal("m-collWETH", collWETHHandle, lending, "WETH")} suffix="cWETH" />
+              <DecryptCard label="Collateral cWBTC" slot="m-collWBTC" revealed={revealed} decrypting={decrypting}
+                onDecrypt={() => reveal("m-collWBTC", collWBTCHandle, lending, "WBTC")} suffix="cWBTC" />
               <DecryptCard label="Borrowed" slot="m-borrow" revealed={revealed} decrypting={decrypting}
                 onDecrypt={() => reveal("m-borrow", borrowUSDCHandle, lending, "USDC")} suffix="cUSDT" color="#8B5CF6" />
               <DecryptCard label="Credit Limit" slot="m-limit" revealed={revealed} decrypting={decrypting}

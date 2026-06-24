@@ -89,8 +89,8 @@ export async function userDecrypt(
   const instance = await getFheInstance();
   const keypair = instance.generateKeypair();
   const contractAddresses = [...new Set(pairs.map((p) => p.contractAddress))];
-  const startTimeStamp = Math.floor(Date.now() / 1000).toString();
-  const durationDays = '7';
+  const startTimeStamp = Math.floor(Date.now() / 1000); // SDK expects numbers, not strings
+  const durationDays = 7;
 
   const eip712 = instance.createEIP712(keypair.publicKey, contractAddresses, startTimeStamp, durationDays);
   const signature = await walletClient.signTypedData({
