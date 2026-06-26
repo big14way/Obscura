@@ -10,5 +10,6 @@ fhevmTemp
 # keep example env templates (no secrets)
 !.env.example
 
-# internal planning doc — not for the public repo
+# internal planning / pitch docs — not for the public repo
 ZAMA_PORT.md
+docs/VIDEO_SCRIPT.md
