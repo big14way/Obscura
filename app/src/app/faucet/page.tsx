@@ -25,14 +25,18 @@ export default function FaucetPage() {
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { writeContractAsync } = useWriteContract();
-  // Explicit gas limit — FHEVM txs can't be reliably gas-estimated by the wallet.
+  const { switchChain, switchChainAsync } = useSwitchChain();
+  // Ensure the wallet is on Sepolia before each write (no-op if already there), then send with an
+  // explicit chainId + gas limit (FHEVM txs can't be gas-estimated by the wallet).
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sendTx = (o: any) => writeContractAsync({ gas: BigInt(2000000), ...o });
+  const sendTx = async (o: any) => {
+    try { await switchChainAsync({ chainId: sepolia.id }); } catch { /* already on Sepolia or declined */ }
+    return writeContractAsync({ chainId: sepolia.id, gas: BigInt(2000000), ...o });
+  };
   // gate wallet UI until mount to avoid SSR/client hydration mismatch (wagmi reconnects on client)
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const chainId = useChainId();
-  const { switchChain } = useSwitchChain();
   const wrongNetwork = isConnected && chainId !== sepolia.id;
   useEffect(() => {
     if (mounted && isConnected && chainId !== sepolia.id) switchChain?.({ chainId: sepolia.id });

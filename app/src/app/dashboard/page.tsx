@@ -168,15 +168,18 @@ function Dashboard() {
   const { connect, error: connectError } = useConnect();
   const { disconnect } = useDisconnect();
   const { writeContractAsync } = useWriteContract();
-  // FHEVM txs can't be reliably gas-estimated by wallets (the coprocessor/proof path isn't
-  // simulatable), which makes MetaMask submit a bad limit ("gas limit too high"). Set an
-  // explicit limit on every write — measured heaviest op is ~1.3M; 5M is safe headroom.
+  const { switchChain, switchChainAsync } = useSwitchChain();
+  // Ensure the wallet is on Sepolia before every write (no-op if already there), then send with an
+  // explicit chainId + gas limit. FHEVM txs can't be gas-estimated by wallets, and a single-chain
+  // config makes auto-switch unreliable — this guarantees writes land on Sepolia and prompt to sign.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sendTx = (o: any) => writeContractAsync({ gas: BigInt(5000000), ...o });
+  const sendTx = async (o: any) => {
+    try { await switchChainAsync({ chainId: sepolia.id }); } catch { /* already on Sepolia or user declined */ }
+    return writeContractAsync({ chainId: sepolia.id, gas: BigInt(5000000), ...o });
+  };
   const publicClient = usePublicClient();
   const { encrypt, decrypt } = useObscura();
   const chainId = useChainId();
-  const { switchChain } = useSwitchChain();
   const wrongNetwork = isConnected && chainId !== sepolia.id;
 
   const usdc = CONTRACTS.usdc as `0x${string}`;
