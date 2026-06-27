@@ -165,7 +165,7 @@ const gadAbi = [
 
 function Dashboard() {
   const { address, isConnected } = useAccount();
-  const { connect } = useConnect();
+  const { connect, error: connectError } = useConnect();
   const { disconnect } = useDisconnect();
   const { writeContractAsync } = useWriteContract();
   // FHEVM txs can't be reliably gas-estimated by wallets (the coprocessor/proof path isn't
@@ -381,7 +381,7 @@ function Dashboard() {
   if (!mounted || !isConnected) {
     return (
       <div className="min-h-screen bg-[#0B0614] text-white flex flex-col gradient-bg">
-        <Nav connected={false} onConnect={() => connect({ connector: injected({ target: 'metaMask' }), chainId: sepolia.id })} />
+        <Nav connected={false} onConnect={() => connect({ connector: injected({ target: 'metaMask' }) })} />
         <div className="flex-1 flex flex-col items-center justify-center px-6">
           <div className="relative">
             <div className="absolute inset-0 bg-[#8B5CF6]/20 rounded-full blur-3xl scale-150"></div>
@@ -391,9 +391,14 @@ function Dashboard() {
           <p className="text-[#8F84A8] mb-8 text-center max-w-sm">
             Connect MetaMask to use Obscura — composable, confidential agentic credit on Ethereum Sepolia. Your debt, collateral and reputation stay encrypted; only you can decrypt them.
           </p>
-          <button className="!bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl h-14 px-8" onClick={() => connect({ connector: injected({ target: 'metaMask' }), chainId: sepolia.id })}>
+          <button className="!bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded-xl h-14 px-8" onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}>
             Connect MetaMask
           </button>
+          {connectError && (
+            <p className="text-red-400 text-sm mt-4 text-center max-w-sm">
+              {connectError.message?.slice(0, 160) || "Couldn't connect."} — make sure MetaMask is installed, unlocked, and other wallet extensions (e.g. HashPack) are disabled.
+            </p>
+          )}
         </div>
       </div>
     );

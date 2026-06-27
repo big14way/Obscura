@@ -93,7 +93,7 @@ export default function FaucetPage() {
 
         <div className="mt-6 flex items-center gap-3">
           {(!mounted || !isConnected) ? (
-            <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => connect({ connector: injected({ target: 'metaMask' }), chainId: sepolia.id })}>Connect MetaMask</button>
+            <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}>Connect MetaMask</button>
           ) : (
             <>
               <button className="h-10 px-4 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-semibold" onClick={() => disconnect()}>{address?.slice(0, 6)}…{address?.slice(-4)}</button>
