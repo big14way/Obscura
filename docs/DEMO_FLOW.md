@@ -3,7 +3,7 @@
 ## 5-Minute Confidential Demo Script
 
 ### Setup (30s)
-1. Open http://localhost:3000
+1. Open https://obscura-fhe.vercel.app
 2. Connect MetaMask on **Ethereum Sepolia** (chain ID `11155111`)
 3. Go to **Faucet** → mint confidential tokens (**cUSDT / cWETH / cWBTC**). The faucet calls `mint(to, amount)` on each `ConfidentialMockToken`.
 

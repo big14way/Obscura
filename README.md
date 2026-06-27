@@ -6,7 +6,7 @@
 
 > 📄 **Zama port:** this repo was re‑architected from a plaintext build into a **confidential** agentic‑credit dApp for the **Zama Developer Program — Mainnet Season 3 (Builder Track)**.
 
-🌐 **Run locally:** `cd app && npm run dev` → http://localhost:3000 _(not yet deployed to a public URL)_
+🌐 **Live demo:** **https://obscura-fhe.vercel.app** · or run locally: `cd app && npm run dev`
 
 ---
 
@@ -292,7 +292,7 @@ obscura/
 
 ## Links
 
-- 🌐 **Run locally:** `cd app && npm run dev` → http://localhost:3000 _(not yet deployed to a public URL)_
+- 🌐 **Live demo:** **https://obscura-fhe.vercel.app** · or run locally: `cd app && npm run dev`
 - 🔐 **Zama Protocol / FHEVM:** https://docs.zama.ai
 - 🔎 **Explorer:** https://sepolia.etherscan.io
 

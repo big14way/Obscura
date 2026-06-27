@@ -29,7 +29,7 @@ const { address, connected, encrypt, decrypt } = useObscura();
 ```
 
 ## 2) Get confidential test tokens (Faucet)
-Open: **http://localhost:3000/faucet** — mints **cUSDT / cWETH / cWBTC** (`ConfidentialMockToken.mint`).
+Open: **https://obscura-fhe.vercel.app/faucet** — mints **cUSDT / cWETH / cWBTC** (`ConfidentialMockToken.mint`).
 
 **Token decimals**
 - cUSDT: 6
@@ -184,7 +184,7 @@ await writeContractAsync({ address: CONTRACTS.lp, abi: lpAbi, functionName: 'dep
 ```
 
 ## 7) UI alternative (no code)
-- Go to **http://localhost:3000**
+- Go to **https://obscura-fhe.vercel.app**
 - Connect MetaMask on **Ethereum Sepolia**
 - setOperator → deposit cWETH/cWBTC as encrypted collateral
 - Encrypted borrow / repay cUSDT

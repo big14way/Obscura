@@ -12,10 +12,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Obscura", url: "https://github.com/big14way/Obscura" }],
   creator: "Obscura",
   publisher: "Obscura",
-  // metadataBase: set this to the public deploy URL once the app is hosted (e.g. Vercel).
+  metadataBase: new URL("https://obscura-fhe.vercel.app"),
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: "https://obscura-fhe.vercel.app",
     title: "Obscura | Confidential Agentic Credit",
     description: "Composable privacy for onchain credit. AI agents borrow against encrypted collateral on the Zama FHEVM — debt, credit limit, reputation and x402 amounts stay encrypted (euint64), settled in ERC-7984 cUSDT on Ethereum Sepolia.",
     siteName: "Obscura",
