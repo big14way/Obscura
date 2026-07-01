@@ -1,301 +1,208 @@
-# Obscura — Confidential Agentic Credit on the Zama Protocol
+<div align="center">
 
-**Confidential credit infrastructure for AI agents, built on the Zama Protocol (FHEVM) and deployed on Ethereum Sepolia.**
+# 🔐 Obscura
 
-> 🔐 **Composable privacy is the key.** An AI agent's debt, collateral, credit limit, reputation and x402 payment amounts are **encrypted on-chain** (`euint64`) via Fully Homomorphic Encryption — yet the protocol still computes LTV, limits and deleveraging directly over the ciphertext. Only the agent can decrypt its own values (EIP-712), and a granted loan is **indistinguishable from a denied one**, so competitors can't see, copy, or front-run a position.
+### Confidential Credit Infrastructure for AI Agents
 
-> 📄 **Zama port:** this repo was re‑architected from a plaintext build into a **confidential** agentic‑credit dApp for the **Zama Developer Program — Mainnet Season 3 (Builder Track)**.
+**The first credit protocol where an agent's debt, collateral, credit limit, reputation, and payments are *encrypted on‑chain* — yet the protocol still computes LTV, limits, and deleveraging directly on the ciphertext.**
 
-🌐 **Live demo:** **https://obscura-fhe.vercel.app** · or run locally: `cd app && npm run dev`
+Built on the **Zama Protocol (FHEVM)** · Live & verified on **Ethereum Sepolia**
+
+[![Zama Developer Program](https://img.shields.io/badge/Zama-Developer%20Program%20S3-8B5CF6?style=for-the-badge)](https://www.zama.org/) [![Network](https://img.shields.io/badge/Ethereum-Sepolia-627EEA?style=for-the-badge)](https://sepolia.etherscan.io/) [![FHEVM](https://img.shields.io/badge/FHEVM-Confidential-0B0614?style=for-the-badge)](https://docs.zama.org/protocol)
+
+### [🌐 Live Demo](https://obscura-fhe.vercel.app) · [▶️ Watch the Demo](https://youtu.be/QAYe7cgMxX0) · [📜 Verified Contracts](#-live-on-ethereum-sepolia-verified)
+
+<a href="https://youtu.be/QAYe7cgMxX0">
+  <img src="https://img.youtube.com/vi/QAYe7cgMxX0/maxresdefault.jpg" alt="Obscura — 3-minute demo" width="680" />
+</a>
+
+*▶️ 3‑minute demo — encrypted supply, borrow, x402 payment, and on‑chain proof it's all ciphertext.*
+
+</div>
 
 ---
 
-## What is Obscura?
+## The Problem
 
-Obscura is a **confidential lending and credit protocol** for the agentic economy. Every sensitive amount — collateral, debt, credit limit, reputation score, and x402 payment value — lives on-chain as a Fully Homomorphic Encryption ciphertext (`euint64`). Computation happens directly over the encrypted data, so the protocol can enforce credit logic without ever revealing it. Because positions are computationally indistinguishable on-chain, no competing agent can see a balance, copy a strategy, or front-run a liquidation — composability that is impossible without FHE.
+AI agents are starting to transact autonomously — paying for APIs, data, and compute, and increasingly **borrowing capital to operate**. But there's no credit layer built for them, and the obvious approach breaks on a fundamental flaw:
 
-- **Encrypted positions** — Collateral, debt and credit limits are stored as `euint64`; balances surface as `bytes32` handles, never plaintext.
-- **Approval == denial** — A granted loan and a denied one write **identical ciphertext** on-chain. Observers can't tell whether an agent borrowed, how much, or whether it was approved at all.
-- **Confidential reputation** — An agent's `euint64` credit score is built from on-chain repayment history; only the agent can decrypt it via EIP-712.
-- **Selective disclosure** — An agent can grant a lender or auditor read access to its encrypted score or position without making it public — the compliant‑finance angle.
-- **Confidential x402 payments** — Machine-to-machine payment amounts are recorded as encrypted receipts only the counterparties can read.
-- **Gradual Auto-Deleveraging (GAD)** — Positions unwind smoothly instead of being hard-liquidated — permissionless to crank, yet leak-free and MEV-resistant.
-- **Settles in cUSDT** — The confidential ERC-7984 token the Zama Developer Program itself pays rewards in.
+> **On every public blockchain, balances and debt are visible to everyone.**
 
-### The confidential x402 flow
+For an autonomous agent, that transparency is a liability, not a feature:
 
-```
-Agent → Service (HTTP 402) → Agent pays via encrypted X402Receipt → Service delivers
-```
+- **Strategy leakage** — a profitable agent's positions are an open book; competitors copy it instantly.
+- **Front‑running & targeted liquidation** — anyone can see an agent approaching its limit and attack it.
+- **No confidential creditworthiness** — an agent can't build a credit history without exposing its entire financial life.
 
-The payment amount is encrypted; only the payer (and authorized parties) can decrypt the receipt.
+Confidentiality *alone* doesn't solve this either — a private chain or a mixer can hide values, but then you can't run credit logic on them. **Finance needs composable privacy: data that is confidential *and* still computable.** That is exactly what Fully Homomorphic Encryption on the Zama Protocol makes possible — and what Obscura is built on.
 
-### Why the Zama Protocol (FHEVM)?
+## The Solution
 
-- **On-chain confidentiality** — Amounts stay encrypted end-to-end via FHE; logic runs over ciphertexts.
-- **Indistinguishable outcomes** — Approval and denial of credit are not observable on-chain.
-- **EIP-712 user decryption** — Only the data owner can reveal their own values.
-- **EVM compatible** — Standard tooling on **Ethereum Sepolia** (wagmi, viem, hardhat, FHEVM SDK).
+**Obscura is a confidential lending & credit protocol for the agentic economy.** Every sensitive value — collateral, debt, credit limit, reputation score, and x402 payment amount — lives on‑chain as an FHE ciphertext (`euint64`). Computation happens **directly over the encrypted data**, so the protocol enforces real credit logic without ever seeing a number.
+
+An agent can:
+- 🔒 **Deposit encrypted collateral** and **borrow confidential cUSDT** against it — the amounts never appear in plaintext.
+- 🤖 **Pay for services over x402** with encrypted receipts only the counterparties can read.
+- 📈 **Build an encrypted reputation** that improves with repayment history — private by default, *selectively disclosable* to a lender or auditor.
+- 🛡️ Be protected by **Gradual Auto‑Deleveraging** instead of hard liquidations — unwound in small encrypted slices, leak‑free and MEV‑resistant.
+
+## Why It Matters — the property that's impossible without FHE
+
+Obscura's headline guarantee:
+
+> **A granted loan and a denied loan write the *exact same encrypted bytes* on‑chain.**
+
+Because credit checks run homomorphically over ciphertexts, an observer **cannot tell whether an agent borrowed, how much, or even whether it was approved.** No competitor can see a position, copy a strategy, or front‑run a liquidation. This is *composable privacy* — the Zama Season 3 thesis — applied to credit: **confidential and programmable, on a public chain.** No plaintext L1, no ZK circuit, and no private sidechain can offer all three at once.
+
+---
+
+## 🧩 Deep Zama Protocol Integration
+
+Obscura is **FHE‑native**, not FHE‑bolted‑on. Every contract inherits `ZamaEthereumConfig` and computes on encrypted state. Highlights of how we use the protocol:
+
+| FHEVM capability | How Obscura uses it |
+|---|---|
+| **Encrypted types** | Positions are `euint64`; all value/LTV math is widened to `euint128` to avoid silent 64‑bit wraparound. |
+| **Encrypted inputs** | Every amount is encrypted client‑side via the relayer SDK (`createEncryptedInput().add64().encrypt()`) → submitted as `externalEuint64` + `inputProof`, imported with `FHE.fromExternal` and validated with `FHE.isSenderAllowed`. |
+| **No branching on ciphertext** | Every `if`/`require` on an amount becomes `ebool` + **`FHE.select`** — this is what makes approval and denial indistinguishable. |
+| **No `euint/euint` division** | LTV/health are **cross‑multiplied comparisons**; value is computed as a *single* `amount × (price·10^(scale−dec))` multiply (HCU‑efficient, division‑free). |
+| **ACL discipline** | After every write: `FHE.allowThis` + `FHE.allow(handle, agent)`. Cross‑contract handles (Lending → GAD → Reputation) are passed with `FHE.allowTransient`. |
+| **EIP‑712 user decryption** | Views return `bytes32` handles; only the data owner reveals their value client‑side via the relayer's EIP‑712 `userDecrypt`. Selective disclosure = the agent grants `FHE.allow` to a specific lender. |
+| **ERC‑7984 confidential token** | Settles in **cUSDT** (ERC‑7984). Authorization uses the time‑bounded **operator model** (`setOperator`), not ERC‑20 `approve`. |
+| **HCU‑aware design** | Positions are stored as a single aggregate per `(agent, token)` (never looped arrays), keeping every tx within the FHEVM HCU budget. |
+
+**Proven, not claimed:** the confidential flows are covered by a Hardhat test suite on the FHEVM mock (**5/5 passing**, incl. an over‑leverage → crank → seizure test) *and* by live end‑to‑end scripts that run the full flow against the verified Sepolia contracts (`scripts/e2e.mjs`, `scripts/check-x402.mjs`).
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│              Obscura — Confidential Credit (FHEVM)           │
-├─────────────┬─────────────┬─────────────┬──────────────────┤
-│ ObscuraCore  │ Reputation  │ ObscuraGAD   │ X402Receipt      │
-│ (Config)    │ (enc score) │ (Deleverage)│ (enc HTTP 402)   │
-├─────────────┴─────────────┴─────────────┴──────────────────┤
-│                     ObscuraLending                           │
-│   deposit → borrow → repay → withdraw   (all euint64)       │
-├─────────────────────────────────────────────────────────────┤
-│                        ObscuraLP                             │
-│                (confidential yield vault)                    │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                 Obscura — Confidential Credit (FHEVM)          │
+├───────────────┬───────────────┬───────────────┬──────────────┤
+│  ObscuraCore   │ Reputation    │  ObscuraGAD    │  X402Receipt │
+│  (cleartext    │ Registry      │  (gradual      │  (encrypted  │
+│   risk/price   │ (enc. score,  │   deleveraging,│   HTTP-402   │
+│   boundary)    │  euint64)     │  leak-free)    │   receipts)  │
+├───────────────┴───────────────┴───────────────┴──────────────┤
+│                        ObscuraLending                          │
+│   deposit → borrow → repay → withdraw   (all euint64/euint128) │
+│   approval == denial · aggregate encrypted positions           │
+├──────────────────────────────┬─────────────────────────────---┤
+│         ObscuraLP            │        ObscuraFlash             │
+│  (confidential yield vault)  │  (composable flash-loan leg)    │
+└──────────────────────────────┴─────────────────────────────---┘
+        settles in ▸ cUSDT / cWETH / cWBTC  (ERC-7984)
 ```
 
-*All amounts (collateral, debt, limits, shares, scores, payments) are encrypted `euint64` values. Inputs are submitted as `externalEuint64` handles + `inputProof`; reads return `bytes32` handles decrypted client-side via EIP-712.*
+*`ObscuraCore` is an intentional cleartext boundary: risk params and oracle prices stay public (FHE has no `euint/euint` division), so position **size** is private while the risk curve is public — the standard model for confidential lending.*
 
 ---
 
-## Deployed Contracts (live on Ethereum Sepolia — verified)
+## 🚀 Live on Ethereum Sepolia (verified)
 
-**Network:** Ethereum Sepolia · **Chain ID:** `11155111` · **Explorer:** https://sepolia.etherscan.io
-All contracts are verified on Etherscan. The frontend is wired to these by default (`app/src/lib/evmContracts.ts`), overridable via `NEXT_PUBLIC_*`.
+**Network:** Ethereum Sepolia · **Chain ID:** `11155111` · [**Live app →**](https://obscura-fhe.vercel.app)
+All contracts are **verified on Etherscan**; the frontend is wired to them by default.
 
-| Contract | Role | Address (verified) |
-|----------|------|--------------------|
-| ObscuraLending | Confidential deposit / borrow / repay / withdraw (`euint64`) | [`0x4138…5f41`](https://sepolia.etherscan.io/address/0x413890977637cF1490E12f62aFfD1236D68e5f41#code) |
-| ObscuraCore | Protocol config (cleartext price/risk boundary) | [`0x85c8…FfC46`](https://sepolia.etherscan.io/address/0x85c8Ba069e43A63C8272cBDd83C08Afc391FfC46#code) |
-| ObscuraGAD | Gradual Auto-Deleveraging (permissionless, leak-free) | [`0x6436…d3032`](https://sepolia.etherscan.io/address/0x64368aa0Cc2385908Cd9666a866Bdb10D94d3032#code) |
-| ObscuraLP | Confidential yield vault | [`0x0A4A…374438`](https://sepolia.etherscan.io/address/0x0A4AE2dDcC75887100719C65E3AA2a9296374438#code) |
-| ReputationRegistry | Encrypted credit score (`euint64`) | [`0x2794…7dEF69`](https://sepolia.etherscan.io/address/0x27947554B362034641330B97D2b8e30A617dEF69#code) |
-| X402Receipt | Encrypted HTTP 402 payment receipts | [`0xFd06…841330`](https://sepolia.etherscan.io/address/0xFd063287E37a833d631bFD47afcFDcB0E4841330#code) |
-| ObscuraFlash | Flash loans (composable plaintext-amount leg) | [`0x2700…484451`](https://sepolia.etherscan.io/address/0x2700E6f99dBe91283aC17bB0D03a5E34Da484451#code) |
-| cUSDT | Confidential ERC-7984 token (`ConfidentialMockToken`, 6d) | [`0x603B…00B1`](https://sepolia.etherscan.io/address/0x603B390a66Bae8EFa530D41ae563D5D4569a00B1#code) |
-| cWETH | Confidential ERC-7984 token (6d) | [`0x8C65…0557`](https://sepolia.etherscan.io/address/0x8C658bEc9BC761910144A72377FcBEd9404a0557#code) |
-| cWBTC | Confidential ERC-7984 token (8d) | [`0x6951…eC7a`](https://sepolia.etherscan.io/address/0x69511f0F5a629710D113B221dCE44B8650CFeC7a#code) |
-
-To redeploy your own set: `npm run deploy` → paste the printed `NEXT_PUBLIC_*` into `app/.env.local` → `npm run verify` equivalent (`npx hardhat run scripts/verify.ts --network sepolia`).
+| Contract | Role | Address |
+|---|---|---|
+| **ObscuraLending** | Encrypted deposit / borrow / repay / withdraw | [`0x4138…5f41`](https://sepolia.etherscan.io/address/0x413890977637cF1490E12f62aFfD1236D68e5f41#code) |
+| **ObscuraCore** | Protocol config (price/risk boundary) | [`0x85c8…FfC46`](https://sepolia.etherscan.io/address/0x85c8Ba069e43A63C8272cBDd83C08Afc391FfC46#code) |
+| **ObscuraGAD** | Gradual Auto‑Deleveraging | [`0x6436…d3032`](https://sepolia.etherscan.io/address/0x64368aa0Cc2385908Cd9666a866Bdb10D94d3032#code) |
+| **ObscuraLP** | Confidential yield vault | [`0x0A4A…374438`](https://sepolia.etherscan.io/address/0x0A4AE2dDcC75887100719C65E3AA2a9296374438#code) |
+| **ReputationRegistry** | Encrypted credit score (`euint64`) | [`0x2794…7dEF69`](https://sepolia.etherscan.io/address/0x27947554B362034641330B97D2b8e30A617dEF69#code) |
+| **X402Receipt** | Encrypted HTTP‑402 payment receipts | [`0xFd06…841330`](https://sepolia.etherscan.io/address/0xFd063287E37a833d631bFD47afcFDcB0E4841330#code) |
+| **ObscuraFlash** | Flash loans (composable leg) | [`0x2700…484451`](https://sepolia.etherscan.io/address/0x2700E6f99dBe91283aC17bB0D03a5E34Da484451#code) |
+| **cUSDT** / **cWETH** / **cWBTC** | Confidential ERC‑7984 tokens | [`0x603B…00B1`](https://sepolia.etherscan.io/address/0x603B390a66Bae8EFa530D41ae563D5D4569a00B1#code) · [`0x8C65…0557`](https://sepolia.etherscan.io/address/0x8C658bEc9BC761910144A72377FcBEd9404a0557#code) · [`0x6951…eC7a`](https://sepolia.etherscan.io/address/0x69511f0F5a629710D113B221dCE44B8650CFeC7a#code) |
 
 ---
 
-## Quick Start
+## ✨ Feature Highlights
 
-### 1. Run the Demo
+- **Encrypted credit lines** — borrow confidential cUSDT against encrypted collateral; limits are `euint64`, and *approval is indistinguishable from denial* on‑chain.
+- **Confidential x402 payments** — agents pay for services over HTTP‑402; the receipt amount is an encrypted handle only the payer & recipient can decrypt.
+- **Encrypted reputation (ERC‑8004‑style)** — a `euint64` score built from repayment history; only the agent can decrypt it, or grant a lender read access.
+- **Gradual Auto‑Deleveraging (GAD)** — permissionless crank that seizes only a small encrypted slice when the *encrypted* LTV is over threshold; a healthy crank is a no‑op indistinguishable from a real one.
+- **Confidential LP yield** — supply liquidity for encrypted vault shares; your position size stays private.
 
-1. Run locally: `cd app && npm run dev`, then open http://localhost:3000
-2. Connect MetaMask on **Ethereum Sepolia**
-3. Get confidential test tokens via **Faucet** (mints cUSDT / cWETH / cUSDC)
-4. Set operator → Supply (encrypted) → Borrow (encrypted) → Decrypt position → Repay → Withdraw
+## How the confidential flow works
 
-### 2. Local Development
+```
+Encrypt client-side  →  submit handle + proof  →  compute homomorphically  →  decrypt (EIP-712, owner only)
+
+Supply cWETH ─┐
+              ├─► ObscuraLending: FHE.add to encrypted collateral (euint64)
+Borrow cUSDT ─┘        ├─ ebool ok = under-limit AND healthy   (all on ciphertext)
+                       └─ grant = FHE.select(ok, requested, 0)  ← approval == denial
+Pay via x402 ───────► X402Receipt.record(id, payer, recipient, encAmount, proof)  → encrypted receipt
+Repay ──────────────► reputation improves (homomorphically); GAD keeps positions safe
+```
+
+---
+
+## 🛠️ Quick Start
 
 ```bash
-# Install
+# 1. Contracts
 npm install
-cd app && npm install && cd ..
-
-# Compile contracts
 npx hardhat compile
+npx hardhat test              # 5/5 confidential tests on the FHEVM mock
 
-# Test
-npx hardhat test
-
-# Deploy to Ethereum Sepolia
+# 2. Deploy your own set to Sepolia  (needs DEPLOYER_PK + SEPOLIA_RPC in .env)
 npm run deploy
+npx hardhat run scripts/verify.ts --network sepolia   # verify on Etherscan
+
+# 3. Frontend  (paste the printed NEXT_PUBLIC_* into app/.env.local)
+cd app && npm install && npm run dev   # → http://localhost:3000
 ```
 
-### 3. Frontend
+**Live e2e proof against the deployed contracts** (relayer SDK + real encrypted inputs):
 
 ```bash
-cd app
-npm run dev
-# Open http://localhost:3000
+node scripts/e2e.mjs          # mint → supply → borrow → repay → withdraw → LP → x402
+node scripts/check-x402.mjs   # record + read back a confidential x402 receipt
 ```
+
+## 🧱 Tech Stack
+
+**Contracts:** Solidity `0.8.27` · `@fhevm/solidity` (FHEVM v0.9+) · `@openzeppelin/confidential-contracts` (ERC‑7984) · Hardhat + `@fhevm/hardhat-plugin`
+**Frontend:** Next.js 16 · wagmi + viem · `@zama-fhe/relayer-sdk` (encrypt + EIP‑712 user decryption) · Tailwind
+**Network:** Ethereum Sepolia (Zama coprocessor) · deployed on Vercel
 
 ---
 
-## Key Features
+## 🗺️ Roadmap
 
-### 🤖 Confidential agent-native credit
+**Now (Builder Track submission)** — verified confidential lending core, x402 receipts, encrypted reputation, GAD, and LP live on Sepolia with a working dApp.
 
-Credit limits and borrow amounts are encrypted. Inputs are encrypted client-side, then submitted as a handle + proof.
-
-```typescript
-import { useObscura } from '@/hooks/useObscura';
-import { CONTRACTS } from '@/lib/evmContracts';
-import { parseUnits } from 'viem';
-
-const { encrypt } = useObscura();
-
-// Configure an encrypted daily credit limit ($5,000), auto-repay + x402 on
-const { handle: limitHandle, inputProof } =
-  await encrypt(CONTRACTS.lending, parseUnits('5000', 6));
-
-await writeContract({
-  address: CONTRACTS.lending,
-  abi: lendingAbi,
-  functionName: 'configureAgent',
-  args: [limitHandle, inputProof, true, true], // encLimit, proof, autoRepay, x402
-});
-```
-
-The agent then borrows autonomously within an **encrypted** limit — neither the limit nor the borrow amount is visible on-chain.
-
-### 🕶️ Approval == denial
-
-Because every amount is a ciphertext and the credit checks run homomorphically, a successful borrow and a rejected borrow are **computationally indistinguishable on-chain**. An observer cannot tell whether an agent was approved, denied, or how much was drawn.
-
-### 📊 Confidential reputation
-
-An agent's credit score is stored as `euint64` and improves with on-chain repayment history. Only the agent can read it:
-
-```typescript
-const handle = await readContract({
-  address: CONTRACTS.reputation,
-  abi: reputationAbi,
-  functionName: 'scoreOf',
-  args: [address],
-}); // returns bytes32 handle
-
-const score = await decrypt(handle, CONTRACTS.reputation); // EIP-712 user decryption
-```
-
-### 🛡️ Gradual Auto-Deleveraging (GAD)
-
-No sudden liquidations. When a position drifts over its threshold, GAD unwinds it gradually via `crank`, guarded by `canCrank`. Thresholds are configured in basis points:
-
-```typescript
-await writeContract({
-  address: CONTRACTS.gad,
-  abi: gadAbi,
-  functionName: 'configureGad',
-  args: [true, 9000], // enabled, thresholdBps
-});
-```
-
-### 💸 Confidential x402 receipts
-
-Payment amounts for machine-to-machine x402 settlements are recorded encrypted:
-
-```typescript
-const { handle, inputProof } = await encrypt(CONTRACTS.x402, parseUnits('1.5', 6));
-await writeContract({
-  address: CONTRACTS.x402,
-  abi: x402Abi,
-  functionName: 'record',
-  args: [paymentId, payer, recipient, handle, inputProof],
-});
-```
+- **Q3 2026 — Production hardening:** per‑collateral LTV weighting, interest accrual, a real per‑share LP rate via `ERC7984ERC20Wrapper`, two‑step ownership + reorg‑safe reveal timelocks, and a full audit.
+- **Q4 2026 — Official registry & mainnet:** migrate to the official Zama Wrappers Registry cTokens, add more confidential collateral pairs, and deploy to Ethereum mainnet.
+- **2027 — Agent SDK & credit passport:** a drop‑in SDK/skill so any agent framework can open a credit line in a few calls, plus a portable **encrypted credit passport** an agent carries across protocols (selective disclosure to lenders).
+- **Composable rails:** confidential agent‑to‑agent settlement, streaming x402 subscriptions, and a keeper network for permissionless GAD cranking.
 
 ---
 
-## Scope & honest engineering
+## 🔎 Scope & honest engineering
 
-This is a **testnet demo built for the Builder Track**, not an audited mainnet protocol. We'd rather state the trade‑offs than hide them:
+A testnet demo built for the Builder Track — we state the trade‑offs rather than hide them:
 
-- **Demo tokens** — collateral/settlement use our own `ConfidentialMockToken` (ERC‑7984) with an open faucet, not the official Sepolia cTokenMocks. The frontend can point at either (see `evmContracts.ts`).
-- **Risk model** — a single protocol‑wide `globalMaxLtvBps` is used for the aggregate health check (a production version would weight LTV per collateral). Interest accrual is omitted.
-- **LP vault** — a 1:1 share model (FHE has no `euint/euint` division, so a private per‑share price can't be computed purely homomorphically with private aggregates; the production path is the `ERC7984ERC20Wrapper` `rate()` model).
-- **Flash loans** — `ObscuraFlash` keeps the amount **plaintext on purpose**: flash‑loan correctness needs an atomic balance invariant that can't be evaluated on an `ebool` (no async decrypt mid‑tx). It's the composable, non‑confidential leg — the asset is ERC‑7984 but the amount is public. Not part of the confidential demo.
-- **Governance** — single admin keys, no timelock. Fine for a testnet demo; a mainnet deploy needs two‑step ownership + a reorg‑safe reveal timelock for any public decryption.
+- **Demo tokens** — collateral/settlement use our own `ConfidentialMockToken` (ERC‑7984) with an open faucet, not the official Sepolia cTokenMocks (the frontend can point at either).
+- **Risk model** — a single protocol‑wide `globalMaxLtvBps`; interest accrual omitted.
+- **LP vault** — 1:1 share model (a private per‑share price can't be computed purely homomorphically with private aggregates; production path is the `ERC7984ERC20Wrapper` `rate()` model).
+- **Flash loans** — `ObscuraFlash` keeps the amount **plaintext on purpose** (an atomic balance invariant can't be evaluated on an `ebool`); it's the composable, non‑confidential leg.
+- **Governance** — single admin keys, no timelock (fine for testnet).
 
-What **is** real: the confidential lending/credit core, encrypted x402 receipts, encrypted reputation, and **GAD** (proven by tests + live txs) all run on verified Sepolia contracts with end‑to‑end encryption.
-
----
-
-## Agent Integration
-
-Confidential writes follow the same two-step pattern: **encrypt the amount**, then **submit handle + proof**. Token transfers use `setOperator(spender, until)` instead of ERC-20 `approve`.
-
-```typescript
-import { useObscura } from '@/hooks/useObscura';
-import { CONTRACTS } from '@/lib/evmContracts';
-import { parseUnits } from 'viem';
-
-const { address, encrypt, decrypt } = useObscura();
-
-// 1) Authorize the lending contract to move your cWETH (operator until now+1h)
-const until = Math.floor(Date.now() / 1000) + 3600;
-await writeContract({
-  address: CONTRACTS.weth, // cWETH (ERC-7984)
-  abi: tokenAbi,
-  functionName: 'setOperator',
-  args: [CONTRACTS.lending, until],
-});
-
-// 2) Encrypt the deposit amount for the contract that reads it (LENDING)
-const { handle, inputProof } = await encrypt(CONTRACTS.lending, parseUnits('1', 6));
-
-// 3) Deposit encrypted collateral
-await writeContract({
-  address: CONTRACTS.lending,
-  abi: lendingAbi,
-  functionName: 'deposit',
-  args: [CONTRACTS.weth, handle, inputProof],
-});
-
-// 4) Read + decrypt the encrypted collateral position
-const collHandle = await readContract({
-  address: CONTRACTS.lending,
-  abi: lendingAbi,
-  functionName: 'totalCollateralOf',
-  args: [address, CONTRACTS.weth],
-}); // bytes32 handle
-const collateral = await decrypt(collHandle, CONTRACTS.lending);
-```
-
-See `docs/AGENT_FLOW.md` for the complete confidential flow.
+What **is** real: the confidential lending/credit core, encrypted x402, encrypted reputation, and GAD — all live on verified Sepolia contracts with end‑to‑end encryption.
 
 ---
 
-## Documentation
+<div align="center">
 
-| Doc | Description |
-|-----|-------------|
-| `docs/DEPLOYMENTS.md` | Contract addresses (from deploy) |
-| `docs/DEMO_FLOW.md` | Confidential demo script |
-| `docs/AGENT_FLOW.md` | Full confidential agent integration |
-| `docs/REPUTATION_ERC8004.md` | Encrypted reputation system |
-| `docs/X402_FLOW.md` | Confidential HTTP 402 payments |
-| `docs/USDC.md` | cUSDT (ERC-7984) settlement token |
+**Obscura** — composable, confidential credit for the agentic economy.
 
----
+[🌐 Live Demo](https://obscura-fhe.vercel.app) · [▶️ Demo Video](https://youtu.be/QAYe7cgMxX0) · [💻 GitHub](https://github.com/big14way/Obscura) · [⚡ Zama Protocol](https://www.zama.org/)
 
-## Repo Structure
+*Built for the Zama Developer Program — Mainnet Season 3 (Builder Track). #ZamaDeveloperProgram*
 
-```
-obscura/
-├── contracts/           # Solidity (FHEVM) smart contracts
-│   ├── ObscuraCore.sol
-│   ├── ObscuraLending.sol
-│   ├── ObscuraLP.sol
-│   ├── ObscuraGAD.sol
-│   ├── ReputationRegistry.sol
-│   ├── X402Receipt.sol
-│   └── ConfidentialMockToken.sol   # cUSDT / cWETH / cUSDC (ERC-7984)
-├── scripts/             # Deployment scripts (npm run deploy → Sepolia)
-├── test/                # Contract tests (npx hardhat test)
-├── app/                 # Next.js frontend
-│   └── src/
-│       ├── app/         # Pages (dashboard, faucet)
-│       ├── hooks/       # useObscura (encrypt/decrypt)
-│       └── lib/         # evmContracts (CONTRACTS, SEPOLIA_CONFIG)
-├── docs/                # Documentation
-└── skills/              # Obscura confidential lending skill
-```
-
----
-
-## Links
-
-- 🌐 **Live demo:** **https://obscura-fhe.vercel.app** · or run locally: `cd app && npm run dev`
-- 🔐 **Zama Protocol / FHEVM:** https://docs.zama.ai
-- 🔎 **Explorer:** https://sepolia.etherscan.io
-
----
-
-*Built for the Zama Developer Program — Mainnet Season 3 (Builder Track)*
+</div>

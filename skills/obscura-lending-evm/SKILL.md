@@ -22,7 +22,7 @@ Read addresses from `@/lib/evmContracts` (`CONTRACTS`, `SEPOLIA_CONFIG`); they a
 ```typescript
 import { CONTRACTS, SEPOLIA_CONFIG } from '@/lib/evmContracts';
 // CONTRACTS = { core, lending, lp, gad, reputation, x402, usdc, weth, wbtc }
-//   usdc = cUSDT, weth = cWETH, wbtc = cUSDC (stand-in) — all ERC-7984
+//   usdc = cUSDT, weth = cWETH, wbtc = cWBTC — all ERC-7984
 // SEPOLIA_CONFIG = { chainId: 11155111, name: 'Ethereum Sepolia', rpc, explorer }
 ```
 
@@ -142,4 +142,4 @@ await writeContractAsync({
 
 ## Full Documentation
 
-See `docs/AGENT_FLOW.md` for the complete confidential flow and `docs/DEPLOYMENTS.md` for addresses. FHEVM SDK reference: https://docs.zama.ai
+See the [Obscura README](https://github.com/big14way/Obscura#readme) for the architecture, deep protocol integration, deployed (verified) addresses, and the live demo. FHEVM SDK reference: https://docs.zama.org/protocol
